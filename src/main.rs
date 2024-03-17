@@ -9,7 +9,7 @@ use serde::Serialize;
 use serde_json::to_string;
 use std::sync::{Arc, Mutex};
 
-const STORE: &str = "./assets/";
+const STORE: &str = "./test/";
 static MAX_CACHE_TIME: u64 = 60;
 
 pub type CacheArc = Arc<Mutex<Cache>>;
