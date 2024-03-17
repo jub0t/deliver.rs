@@ -1,6 +1,7 @@
 use std::sync::{Arc, Mutex};
 
-use crate::{cache::Cache, MAX_CACHE_TIME};
+use crate::cache::Cache;
+static MAX_CACHE_TIME: u64 = 60;
 
 pub async fn start(watch_cache: Arc<Mutex<Cache>>) {
     tokio::task::spawn(async move {
