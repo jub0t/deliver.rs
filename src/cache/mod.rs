@@ -111,6 +111,11 @@ impl Cache {
                             contents = minified;
                         }
 
+                        FileFormat::HTML => {
+                            let minified = self.minifer.html(&data);
+                            contents = minified;
+                        }
+
                         _ => {}
                     }
                 }

@@ -1,3 +1,4 @@
+use minify_html::Cfg;
 use minify_js::{minify, Session, TopLevelMode};
 
 #[derive(Debug)]
@@ -43,5 +44,16 @@ impl Minifier {
                 return code.to_vec();
             }
         }
+    }
+
+    pub fn html(&self, code: &[u8]) -> Vec<u8> {
+        let mut cfg = Cfg::new();
+        cfg.keep_comments = false;
+        cfg.minify_css = true;
+        cfg.minify_js = true;
+        cfg.keep_closing_tags = true;
+        cfg.do_not_minify_doctype = true; // So browser can recognize
+
+        return minify_html::minify(&code, &cfg);
     }
 }
