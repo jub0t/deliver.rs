@@ -1,5 +1,5 @@
 // Import the FileFormat enum from the super module
-use super::FileFormat;
+use super::{FileFormat, ImageFormat};
 
 // Convert a FileFormat enum variant to its corresponding string representation
 pub fn format_to_string(f: FileFormat) -> String {
@@ -7,6 +7,15 @@ pub fn format_to_string(f: FileFormat) -> String {
         FileFormat::CSS => "css".to_string(),
         FileFormat::HTML => "html".to_string(),
         FileFormat::JS => "js".to_string(),
+        FileFormat::IMAGE(i) => match i {
+            ImageFormat::JPEG => {
+                return "jpeg".to_string();
+            }
+            ImageFormat::PNG => {
+                return "png".to_string();
+            }
+        },
+
         FileFormat::None => String::new(),
     }
 }
@@ -17,6 +26,8 @@ pub fn string_to_format(s: &str) -> Option<FileFormat> {
         "css" => Some(FileFormat::CSS),
         "html" => Some(FileFormat::HTML),
         "js" => Some(FileFormat::JS),
+        "png" => Some(FileFormat::IMAGE(ImageFormat::PNG)),
+        "jpeg" => Some(FileFormat::IMAGE(ImageFormat::JPEG)),
         _ => None, // Return None for unrecognized formats
     }
 }

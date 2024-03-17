@@ -18,18 +18,19 @@ async fn main() {
     load_into(&mut cache);
 
     let shared_cache = Arc::new(Mutex::new(cache));
-    println!("Cache Successful!");
+    let cache1 = Arc::clone(&shared_cache.clone());
+    let cache2 = Arc::clone(&shared_cache.clone());
 
-    let shared_cache_clone = Arc::clone(&shared_cache);
     let app = Router::new()
         .route(
-            "/:document/:id",
-            get(move |path| routes::get_asset(shared_cache_clone.clone(), path)),
+            "/image/:document/:id",
+            get(move |path| routes::get_image(cache2, path)),
         )
         .route(
-            "/all",
-            get(move || routes::get_all_assets(shared_cache.clone())),
+            "/:document/:id",
+            get(move |path| routes::get_asset(cache1, path)),
         )
+        .route("/all", get(move || routes::get_all_assets(shared_cache)))
         .route("/create-document", get(routes::create_document))
         .route("/upload-content", get(routes::upload_content))
         .route("/", get(routes::other_routes));

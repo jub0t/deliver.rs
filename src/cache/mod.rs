@@ -13,10 +13,17 @@ use crate::{
 };
 
 #[derive(Clone, Serialize, Deserialize)]
+pub enum ImageFormat {
+    PNG,
+    JPEG,
+}
+
+#[derive(Clone, Serialize, Deserialize)]
 pub enum FileFormat {
     CSS,
     JS,
     HTML,
+    IMAGE(ImageFormat),
     None,
 }
 
@@ -95,7 +102,13 @@ impl Cache {
             }
             Ok(data) => {
                 let mut contents = data.clone();
-                let hash = &self.hasher.hash(contents.clone()).unwrap();
+                let hash = match self.hasher.hash(contents.clone()) {
+                    Ok(hash) => hash,
+                    Err(error) => {
+                        println!("ERROR Hashing {}: {:#?}", filename, error);
+                        0
+                    }
+                };
 
                 if options.minify {
                     match extension {
