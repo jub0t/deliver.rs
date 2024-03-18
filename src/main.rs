@@ -9,6 +9,7 @@ use axum::{
     Router,
 };
 use cache::{load::load_into, Cache};
+use colored::Colorize;
 use std::{
     sync::{Arc, Mutex},
     thread,
@@ -24,15 +25,14 @@ async fn main() {
     load_into(&mut cache);
 
     let shared_cache = Arc::new(Mutex::new(cache));
-    let cache1 = Arc::clone(&shared_cache.clone());
-    let cache2 = Arc::clone(&shared_cache.clone());
-    // Clone the cache for the watchdog
-    let watchdog_cache = Arc::clone(&shared_cache);
 
-    // Spawn a new thread for the watchdog
+    let watchdog_cache = Arc::clone(&shared_cache);
     thread::spawn(move || {
         watchdog::start(watchdog_cache);
     });
+
+    let cache1 = Arc::clone(&shared_cache.clone());
+    let cache2 = Arc::clone(&shared_cache.clone());
 
     let app = Router::new()
         .route(
@@ -48,7 +48,7 @@ async fn main() {
         .route("/upload-content", post(routes::upload_content))
         .route("/", get(routes::other_routes));
 
-    println!("Running at http://127.0.0.1:3434");
+    println!("{} Running at http://127.0.0.1:3434", "[SERVER]".red());
     let listener = tokio::net::TcpListener::bind("127.0.0.1:3434")
         .await
         .unwrap();
