@@ -32,13 +32,8 @@ async fn main() {
     });
 
     let cache1 = Arc::clone(&shared_cache.clone());
-    let cache2 = Arc::clone(&shared_cache.clone());
 
     let app = Router::new()
-        .route(
-            "/image/:document/:id",
-            get(move |path| routes::get_image(cache2, path)),
-        )
         .route(
             "/:document/:id",
             get(move |path| routes::get_asset(cache1, path)),

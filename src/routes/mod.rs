@@ -21,38 +21,6 @@ pub async fn other_routes() -> Response<String> {
     return Response::new("success".into());
 }
 
-pub async fn get_image(
-    state: Arc<Mutex<Cache>>,
-    Path((docid, assid)): Path<(String, String)>,
-) -> impl IntoResponse {
-    let cache = Arc::clone(&state);
-
-    let cache_lock = cache.lock().unwrap();
-    let file = cache_lock.get(docid.clone(), assid.clone());
-    let mut mime = "image/png";
-
-    if let Some(f) = file {
-        match f.format.clone() {
-            FileFormat::IMAGE(i) => match i {
-                ImageFormat::JPEG => {
-                    mime = "image/jpeg";
-                }
-                ImageFormat::PNG => {
-                    mime = "image/png";
-                }
-            },
-
-            _ => {}
-        }
-
-        let raw = f.contents.clone();
-
-        return ([("content-type", mime)], raw);
-    } else {
-        return ([("content-type", mime)], Vec::new());
-    }
-}
-
 pub async fn get_asset(
     state: Arc<Mutex<Cache>>,
     Path((docid, assid)): Path<(String, String)>,
@@ -62,14 +30,11 @@ pub async fn get_asset(
 
     match file {
         None => {
-            return (
-                [("content-type", "text/plain")],
-                Response::new("404".to_string()),
-            );
+            return ([("content-type", "text/plain")], Vec::new());
         }
         Some(file) => {
-            let contents = String::from_utf8_lossy(&file.contents).into_owned();
-            let mut content_type = "text/html";
+            let contents = file.contents.clone();
+            let mut content_type = "application/text";
 
             match &file.format {
                 FileFormat::IMAGE(i) => match i {
@@ -79,10 +44,16 @@ pub async fn get_asset(
                     }
                 },
 
+                FileFormat::HTML => {
+                    content_type = "text/html";
+                }
+
+                FileFormat::JS => content_type = "text/javascript",
+                FileFormat::CSS => content_type = "text/css",
                 _ => {}
             }
 
-            return ([("content-type", content_type)], Response::new(contents));
+            return ([("Content-Type", content_type)], contents);
         }
     }
 }
