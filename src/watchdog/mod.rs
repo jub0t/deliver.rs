@@ -1,32 +1,36 @@
-use std::sync::{Arc, Mutex};
+use std::{
+    sync::{Arc, Mutex},
+    thread,
+    time::Duration,
+};
 
-use crate::cache::Cache;
-static MAX_CACHE_TIME: u64 = 60;
+use crate::cache::{Cache, FileKey};
+pub static MAX_CACHE_TIME: u64 = 60 * 60 * 2; // Cache each item for 2 hours
 
-pub async fn start(watch_cache: Arc<Mutex<Cache>>) {
-    tokio::task::spawn(async move {
-        loop {
-            let files;
-            {
-                let cache = watch_cache.lock().unwrap();
-                files = cache.as_vec().clone(); // Clone the vector to release the lock earlier
-            } // Lock is released here
+pub fn start(cache: Arc<Mutex<Cache>>) {
+    loop {
+        let mut cache_lock = cache.lock().unwrap();
 
-            let now = std::time::SystemTime::now();
-
-            for file in files {
-                let expire = file.created + std::time::Duration::from_secs(MAX_CACHE_TIME);
-                if now >= expire {
-                    let mut cache = watch_cache.lock().unwrap(); // Re-acquire the lock to delete the expired entry
-                    println!("Deleted Expired File: {:?}", file.name);
-                    cache.delete(file.hash);
+        let expired_files: Vec<FileKey> = cache_lock
+            .all()
+            .iter()
+            .filter_map(|(key, file)| {
+                if let Ok(elapsed) = file.created.elapsed() {
+                    if elapsed.as_secs() > MAX_CACHE_TIME {
+                        return Some(*key);
+                    }
                 }
-            }
+                None
+            })
+            .collect();
 
-            println!("Watchdog Cache Cycle Complete");
-            tokio::time::sleep(std::time::Duration::from_secs(3)).await; // Use tokio::time for async sleep
+        for key in expired_files {
+            cache_lock.delete(key);
+            println!("Expired file removed: {:?}", key);
         }
-    })
-    .await
-    .unwrap(); // Wait for the task to complete
+
+        drop(cache_lock);
+
+        thread::sleep(Duration::from_secs(2 * 60)); // Sleep for 60 seconds (adjust as needed)
+    }
 }

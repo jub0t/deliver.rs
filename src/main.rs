@@ -9,7 +9,10 @@ use axum::{
     Router,
 };
 use cache::{load::load_into, Cache};
-use std::sync::{Arc, Mutex};
+use std::{
+    sync::{Arc, Mutex},
+    thread,
+};
 
 const STORE: &str = "./test/";
 
@@ -23,6 +26,13 @@ async fn main() {
     let shared_cache = Arc::new(Mutex::new(cache));
     let cache1 = Arc::clone(&shared_cache.clone());
     let cache2 = Arc::clone(&shared_cache.clone());
+    // Clone the cache for the watchdog
+    let watchdog_cache = Arc::clone(&shared_cache);
+
+    // Spawn a new thread for the watchdog
+    thread::spawn(move || {
+        watchdog::start(watchdog_cache);
+    });
 
     let app = Router::new()
         .route(
