@@ -4,7 +4,10 @@ pub mod minify;
 pub mod routes;
 pub mod watchdog;
 
-use axum::{routing::get, Router};
+use axum::{
+    routing::{get, post},
+    Router,
+};
 use cache::{load::load_into, Cache};
 use std::sync::{Arc, Mutex};
 
@@ -31,8 +34,8 @@ async fn main() {
             get(move |path| routes::get_asset(cache1, path)),
         )
         .route("/all", get(move || routes::get_all_assets(shared_cache)))
-        .route("/create-document", get(routes::create_document))
-        .route("/upload-content", get(routes::upload_content))
+        .route("/create-document", post(routes::create_document))
+        .route("/upload-content", post(routes::upload_content))
         .route("/", get(routes::other_routes));
 
     println!("Running at http://127.0.0.1:3434");

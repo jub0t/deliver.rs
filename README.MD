@@ -4,5 +4,5 @@
 - [x] HTML
 - [x] Javscript
 - [x] Css
-- [ ] PNG/JPEG
+- [x] PNG/JPEG
 - [ ] MP4/WEBM

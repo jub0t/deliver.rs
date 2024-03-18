@@ -1,8 +1,8 @@
 use std::fs::{self};
 
-use crate::{cache::CacheOptions, STORE};
-
 use super::Cache;
+use crate::{cache::CacheOptions, STORE};
+use colored::*;
 
 pub fn load_into(cache: &mut Cache) {
     match fs::read_dir(STORE) {
@@ -17,9 +17,9 @@ pub fn load_into(cache: &mut Cache) {
                     }
                     Ok(document) => {
                         let name = document.file_name().to_str().unwrap().to_string();
-                        let path = format!("{}{}", STORE, name);
-                        println!("- Document: {:#?}", path);
+                        println!("- {} {:#}", "Document:".blue(), name);
 
+                        // let path = format!("{}{}", STORE, name);
                         // let new_path = format!("{}{}", STORE, nanoid!(10));
                         // match fs::rename(path.clone(), new_path) {
                         //     Err(error) => {

@@ -1,7 +1,6 @@
 use std::sync::{Arc, Mutex};
 
 use axum::{
-    body::Bytes,
     extract::Path,
     response::{IntoResponse, Response},
 };
@@ -25,29 +24,32 @@ pub async fn other_routes() -> Response<String> {
 pub async fn get_image(
     state: Arc<Mutex<Cache>>,
     Path((docid, assid)): Path<(String, String)>,
-) -> Response<Bytes> {
+) -> impl IntoResponse {
     let cache = Arc::clone(&state);
 
     let cache_lock = cache.lock().unwrap();
     let file = cache_lock.get(docid.clone(), assid.clone());
+    let mut mime = "image/png";
 
     if let Some(f) = file {
+        match f.format.clone() {
+            FileFormat::IMAGE(i) => match i {
+                ImageFormat::JPEG => {
+                    mime = "image/jpeg";
+                }
+                ImageFormat::PNG => {
+                    mime = "image/png";
+                }
+            },
+
+            _ => {}
+        }
+
         let raw = f.contents.clone();
-        // Return the image data as a response
-        let response = Response::builder()
-            .header("content-type", "image/png")
-            .body(Bytes::from(raw))
-            .unwrap();
 
-        response
+        return ([("content-type", mime)], raw);
     } else {
-        // Handle case when file is not found
-        let response = Response::builder()
-            .header("content-type", "image/png")
-            .body(Bytes::from(Vec::new()))
-            .unwrap();
-
-        response
+        return ([("content-type", mime)], Vec::new());
     }
 }
 

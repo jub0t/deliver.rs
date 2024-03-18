@@ -3,14 +3,14 @@ pub mod load;
 
 use std::{collections::HashMap, fs, sync::atomic::AtomicUsize, time::SystemTime};
 
-use serde::{Deserialize, Serialize};
-
 use crate::{
     cache::format::string_to_format,
     hasher::{HashSize, Hasher},
     minify::Minifier,
     STORE,
 };
+use colored::*;
+use serde::{Deserialize, Serialize};
 
 #[derive(Clone, Serialize, Deserialize)]
 pub enum ImageFormat {
@@ -30,12 +30,12 @@ pub enum FileFormat {
 #[derive(Clone, Serialize, Deserialize)]
 pub struct File {
     pub hash: HashSize,
+    pub key: FileKey,
     pub document: String,
     pub name: String,
     pub format: FileFormat,
     pub created: SystemTime,
     pub contents: Vec<u8>,
-    pub key: FileKey,
 }
 
 pub struct CacheOptions {
@@ -156,10 +156,11 @@ impl Cache {
                 self.files.insert(key, file.clone());
 
                 println!(
-                    "   - File {:#?} Size:{} Hash:{}",
-                    filename,
-                    file.contents.len(),
-                    hash.clone(),
+                    "   - {} [Name: {}] [Size: {}] [Hash: {}]",
+                    "File:".green(),
+                    filename.bright_black(),
+                    file.contents.len().to_string().bright_black(),
+                    hash.clone().to_string().bright_black(),
                 );
 
                 return true;
