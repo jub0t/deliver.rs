@@ -4,8 +4,10 @@ use std::{
     time::Duration,
 };
 
-use crate::cache::{Cache, FileKey};
-pub static MAX_CACHE_TIME: u64 = 60 * 60 * 2; // Cache each item for 2 hours
+use crate::{
+    cache::{Cache, FileKey},
+    config::MAX_CACHE_TIME,
+};
 
 pub fn start(cache: Arc<Mutex<Cache>>) {
     loop {

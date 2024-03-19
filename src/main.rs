@@ -1,4 +1,5 @@
 pub mod cache;
+pub mod config;
 pub mod hasher;
 pub mod minify;
 pub mod routes;

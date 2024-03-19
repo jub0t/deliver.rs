@@ -30,8 +30,6 @@ pub struct CacheOptions {
     pub minify: bool,
 }
 
-pub static COUNTER: AtomicUsize = AtomicUsize::new(1);
-
 pub struct Cache {
     hasher: Hasher,
     files: FileMap,
