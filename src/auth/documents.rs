@@ -7,9 +7,15 @@ pub struct AllowedDocuments {
     pub data: Vec<FileKey>,
 }
 
+impl Default for AllowedDocuments {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 impl AllowedDocuments {
     pub fn new() -> Self {
-        return Self { data: Vec::new() };
+        Self { data: Vec::new() }
     }
 
     pub fn is_allowed(&self, doc_id: FileKey) -> bool {
@@ -19,7 +25,7 @@ impl AllowedDocuments {
             }
         }
 
-        return false;
+        false
     }
 
     pub fn allow(&mut self, doc_id: FileKey) {

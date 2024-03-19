@@ -4,9 +4,15 @@ use minify_js::{minify, Session, TopLevelMode};
 #[derive(Debug)]
 pub struct Minifier {}
 
+impl Default for Minifier {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 impl Minifier {
     pub fn new() -> Self {
-        return Self {};
+        Self {}
     }
 
     pub fn javascript(&self, code: &[u8]) -> Vec<u8> {
@@ -17,10 +23,10 @@ impl Minifier {
         match m {
             Err(error) => {
                 println!("{:#?}", error);
-                return code.to_vec(); // Return without minifying
+                code.to_vec()// Return without minifying
             }
             Ok(_) => {
-                return out;
+                out
             }
         }
     }
@@ -34,14 +40,14 @@ impl Minifier {
                 match output {
                     Err(err) => {
                         println!("{:#?}", err);
-                        return code.to_vec();
+                        code.to_vec()
                     }
                     Ok(data) => return data.as_bytes().to_vec(),
                 }
             }
             Err(err) => {
                 println!("{:#?}", err);
-                return code.to_vec();
+                code.to_vec()
             }
         }
     }
@@ -54,6 +60,6 @@ impl Minifier {
         cfg.keep_closing_tags = true;
         cfg.do_not_minify_doctype = true; // So browser can recognize
 
-        return minify_html::minify(&code, &cfg);
+        minify_html::minify(code, &cfg)
     }
 }

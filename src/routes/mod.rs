@@ -9,7 +9,7 @@ use serde_json::to_string;
 
 use crate::cache::{
     types::{FileFormat, ImageFormat},
-    Cache, File,
+    Cache,
 };
 
 #[derive(Serialize)]
@@ -21,7 +21,7 @@ pub struct IndexResponse {
 pub async fn create_document() {}
 pub async fn upload_content() {}
 pub async fn other_routes() -> Response<String> {
-    return Response::new("success".into());
+    Response::new("success".into())
 }
 
 pub async fn get_asset(
@@ -36,7 +36,7 @@ pub async fn get_asset(
             // File is not found in cache.
             // Let's re-cache the file and send back.
 
-            return ([("content-type", "text/plain")], Vec::new());
+            ([("content-type", "text/plain")], Vec::new())
         }
         Some(file) => {
             let contents = file.contents.clone();
@@ -59,7 +59,7 @@ pub async fn get_asset(
                 _ => {}
             }
 
-            return ([("Content-Type", content_type)], contents);
+            ([("Content-Type", content_type)], contents)
         }
     }
 }
@@ -73,5 +73,5 @@ pub async fn get_all_assets(state: Arc<Mutex<Cache>>) -> Response<String> {
     };
 
     let data = to_string(&r).unwrap();
-    Response::new(data.into())
+    Response::new(data)
 }

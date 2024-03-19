@@ -9,8 +9,14 @@ pub static STORE: &str = "./test/";
 
 pub struct Config {}
 
+impl Default for Config {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 impl Config {
     pub fn new() -> Self {
-        return Self {};
+        Self {}
     }
 }

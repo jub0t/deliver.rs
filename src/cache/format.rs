@@ -9,10 +9,10 @@ pub fn format_to_string(f: FileFormat) -> String {
         FileFormat::JS => "js".to_string(),
         FileFormat::IMAGE(i) => match i {
             ImageFormat::JPEG => {
-                return "jpeg".to_string();
+                "jpeg".to_string()
             }
             ImageFormat::PNG => {
-                return "png".to_string();
+                "png".to_string()
             }
         },
 

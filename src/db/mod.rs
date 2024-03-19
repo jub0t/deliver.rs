@@ -5,6 +5,12 @@ pub struct Database {
     conn: Connection,
 }
 
+impl Default for Database {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 impl Database {
     pub fn new() -> Self {
         let conn = Connection::open_in_memory().unwrap();

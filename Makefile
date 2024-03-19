@@ -3,3 +3,6 @@ master:
 
 run:
 	./target/release/cdn
+
+lint:
+	cargo clippy --fix

@@ -2,7 +2,7 @@ pub mod format;
 pub mod load;
 pub mod types;
 
-use std::{collections::HashMap, fs, sync::atomic::AtomicUsize, time::SystemTime};
+use std::{collections::HashMap, fs, time::SystemTime};
 
 use crate::{
     cache::format::string_to_format,
@@ -39,14 +39,20 @@ pub struct Cache {
 pub type FileKey = HashSize;
 pub type FileMap = HashMap<FileKey, File>;
 
+impl Default for Cache {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 impl Cache {
     pub fn new() -> Self {
         let hasher = Hasher::new();
-        return Self {
+        Self {
             hasher,
             minifer: Minifier::new(),
             files: HashMap::new(),
-        };
+        }
     }
 
     pub fn get(&self, document: String, filename: String) -> Option<&File> {
@@ -54,15 +60,15 @@ impl Cache {
         let hash = &self.hasher.hash(key.as_bytes().to_vec()).unwrap();
 
         let file = self.files.get(hash);
-        return file;
+        file
     }
 
     pub fn delete(&mut self, hash: FileKey) -> Option<File> {
-        return self.files.remove(&hash);
+        self.files.remove(&hash)
     }
 
     pub fn all(&self) -> &FileMap {
-        return &self.files;
+        &self.files
     }
 
     pub fn as_vec(&self) -> Vec<File> {
@@ -73,18 +79,18 @@ impl Cache {
         let full_path = format!("{}{}/{}", STORE, document, filename);
         let mut extension: FileFormat = FileFormat::None;
 
-        match filename.split(".").last() {
+        match filename.split('.').last() {
             None => {
                 println!("File Ignore, No Extension Found: [{}]", filename);
             }
             Some(ext) => {
-                extension = string_to_format(&ext.to_string()).unwrap();
+                extension = string_to_format(ext).unwrap();
             }
         }
 
-        match fs::read(&full_path) {
+        match fs::read(full_path) {
             Err(_) => {
-                return false;
+                false
             }
             Ok(data) => {
                 let mut contents = data.clone();
@@ -130,7 +136,7 @@ impl Cache {
                     .unwrap();
 
                 let file = File {
-                    hash: hash.clone(),
+                    hash,
                     document: document.clone(),
                     format: extension, // Just for now,
                     name: filename.clone(),
@@ -149,7 +155,7 @@ impl Cache {
                     hash.clone().to_string().bright_black(),
                 );
 
-                return true;
+                true
             }
         }
     }
@@ -162,10 +168,10 @@ impl Cache {
             size += file.contents.len()
         }
 
-        return size;
+        size
     }
 
     pub fn item_count(&self) -> usize {
-        return self.files.len();
+        self.files.len()
     }
 }
