@@ -6,9 +6,9 @@ use std::{collections::HashMap, fs, sync::atomic::AtomicUsize, time::SystemTime}
 
 use crate::{
     cache::format::string_to_format,
+    config::STORE,
     hasher::{HashSize, Hasher},
     minify::Minifier,
-    STORE,
 };
 use colored::*;
 use serde::{Deserialize, Serialize};

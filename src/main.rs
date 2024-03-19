@@ -1,5 +1,7 @@
+pub mod auth;
 pub mod cache;
 pub mod config;
+pub mod db;
 pub mod hasher;
 pub mod minify;
 pub mod routes;
@@ -11,12 +13,11 @@ use axum::{
 };
 use cache::{load::load_into, Cache};
 use colored::Colorize;
+use rusqlite::Connection;
 use std::{
     sync::{Arc, Mutex},
     thread,
 };
-
-const STORE: &str = "./test/";
 
 #[tokio::main]
 async fn main() {
@@ -24,6 +25,7 @@ async fn main() {
     load_into(&mut cache);
 
     let shared_cache = Arc::new(Mutex::new(cache));
+    let conn = Connection::open_in_memory().unwrap();
 
     let watchdog_cache = Arc::clone(&shared_cache);
     thread::spawn(move || {
@@ -43,7 +45,8 @@ async fn main() {
         )
         .route("/create-document", post(routes::create_document))
         .route("/upload-content", post(routes::upload_content))
-        .route("/", get(routes::other_routes));
+        .route("/", get(routes::other_routes))
+        .with_state(Arc::new(Mutex::new(conn)));
 
     println!("{} Running at http://127.0.0.1:3434", "[SERVER]".red());
     let listener = tokio::net::TcpListener::bind("127.0.0.1:3434")
