@@ -17,8 +17,6 @@ use std::{
 
 const STORE: &str = "./test/";
 
-pub type CacheArc = Arc<Mutex<Cache>>;
-
 #[tokio::main]
 async fn main() {
     let mut cache = Cache::new();
