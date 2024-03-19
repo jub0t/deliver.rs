@@ -1,3 +1,4 @@
+pub mod auth;
 pub mod responses;
 
 use std::sync::{Arc, Mutex};

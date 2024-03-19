@@ -13,7 +13,6 @@ use axum::{
 };
 use cache::{load::load_into, Cache};
 use colored::Colorize;
-use rusqlite::Connection;
 use std::{
     sync::{Arc, Mutex},
     thread,
@@ -25,7 +24,8 @@ async fn main() {
     load_into(&mut cache);
 
     let shared_cache = Arc::new(Mutex::new(cache));
-    let conn = Connection::open_in_memory().unwrap();
+    let db = db::Database::new();
+    let db_arc = Arc::new(Mutex::new(db));
 
     let watchdog_cache = Arc::clone(&shared_cache);
     thread::spawn(move || {
@@ -45,8 +45,11 @@ async fn main() {
         )
         .route("/create-document", post(routes::create_document))
         .route("/upload-content", post(routes::upload_content))
-        .route("/", get(routes::other_routes))
-        .with_state(Arc::new(Mutex::new(conn)));
+        .route(
+            "/authenticate",
+            post(move |body| routes::auth::authenticate(db_arc, body)),
+        )
+        .route("/", get(routes::other_routes));
 
     println!("{} Running at http://127.0.0.1:3434", "[SERVER]".red());
     let listener = tokio::net::TcpListener::bind("127.0.0.1:3434")
