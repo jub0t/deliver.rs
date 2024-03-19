@@ -1,4 +1,4 @@
-master:
+build:
 	cargo build --release --color never --quiet
 
 run:

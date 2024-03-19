@@ -41,7 +41,7 @@ async fn main() {
         )
         .route(
             "/diagnostics",
-            get(move || routes::get_all_assets(shared_cache)),
+            get(move || routes::diagnostics(shared_cache)),
         )
         .route("/create-document", post(routes::create_document))
         .route("/upload-content", post(routes::upload_content))

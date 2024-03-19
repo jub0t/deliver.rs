@@ -7,27 +7,28 @@
 - [x] Css
 - [x] Image
     - [x] PNG
-    - [ ] JPG
+    - [x] JPG
     - [x] JPEG
     - [ ] GIF
     - [ ] SVG
-- [ ] Video
-    - [ ] MP4
-    - [ ] WEBM
-    - [ ] FLV
-- [ ] Audio
-    - [ ] OGG
-    - [ ] ACC
-    - [ ] MP3
-- [ ] Archives
-    - [ ] ZIP
-    - [ ] RAR
-- [ ] Feeds & Data
-    - [ ] JSON
-    - [ ] XML
+- [x] Video
+    - [x] MP4
+    - [x] WEBM
+    - [x] FLV
+- [x] Audio
+    - [x] OGG
+    - [x] ACC
+    - [x] MP3
+- [x] Archives
+    - [x] ZIP
+    - [x] RAR
+- [x] Feeds & Data
+    - [x] JSON
+    - [x] YAML
+    - [x] XML
+- [x] Documents
+    - [x] PDF
+    - [x] PPT/PPTX
 - [ ] Fonts
     - [ ] TTF/OTF
     - [ ] WOFF/WOFF2
-- [ ] Documents
-    - [ ] PDF
-    - [ ] PPT/PPTX

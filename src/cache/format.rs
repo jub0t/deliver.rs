@@ -1,5 +1,8 @@
 // Import the FileFormat enum from the super module
-use super::{types::ImageFormat, FileFormat};
+use super::{
+    types::{ArchiveFormats, AudioFormats, DocumentFormats, FeedFormats, ImageFormat},
+    FileFormat,
+};
 
 // Convert a FileFormat enum variant to its corresponding string representation
 pub fn format_to_string(f: FileFormat) -> String {
@@ -8,12 +11,8 @@ pub fn format_to_string(f: FileFormat) -> String {
         FileFormat::HTML => "html".to_string(),
         FileFormat::JS => "js".to_string(),
         FileFormat::IMAGE(i) => match i {
-            ImageFormat::JPEG => {
-                "jpeg".to_string()
-            }
-            ImageFormat::PNG => {
-                "png".to_string()
-            }
+            ImageFormat::JPEG => "jpeg".to_string(),
+            ImageFormat::PNG => "png".to_string(),
         },
 
         _ => String::new(),
@@ -29,5 +28,36 @@ pub fn string_to_format(s: &str) -> Option<FileFormat> {
         "png" => Some(FileFormat::IMAGE(ImageFormat::PNG)),
         "jpeg" => Some(FileFormat::IMAGE(ImageFormat::JPEG)),
         _ => None, // Return None for unrecognized formats
+    }
+}
+
+pub fn format_to_mime(ft: FileFormat) -> String {
+    match ft {
+        FileFormat::IMAGE(image_format) => match image_format {
+            ImageFormat::PNG => "image/png".to_string(),
+            ImageFormat::JPEG => "image/jpeg".to_string(),
+        },
+        FileFormat::AUDIO(audio_format) => match audio_format {
+            AudioFormats::MP3 => "audio/mpeg".to_string(),
+            AudioFormats::ACC => "audio/aac".to_string(),
+            AudioFormats::OGG => "audio/ogg".to_string(),
+        },
+        FileFormat::DOCUMENT(document_format) => match document_format {
+            DocumentFormats::PDF => "application/pdf".to_string(),
+            DocumentFormats::PPT => "application/vnd.ms-powerpoint".to_string(),
+        },
+        FileFormat::ARCHIVE(archive_format) => match archive_format {
+            ArchiveFormats::RAR => "application/x-rar-compressed".to_string(),
+            ArchiveFormats::ZIP => "application/zip".to_string(),
+        },
+        FileFormat::FEED(feed_format) => match feed_format {
+            FeedFormats::JSON => "application/json".to_string(),
+            FeedFormats::XML => "application/xml".to_string(),
+            FeedFormats::YAML => "application/x-yaml".to_string(),
+        },
+        FileFormat::HTML => "text/html".to_string(),
+        FileFormat::JS => "text/javascript".to_string(),
+        FileFormat::CSS => "text/css".to_string(),
+        FileFormat::None => "application/text".to_string(),
     }
 }
