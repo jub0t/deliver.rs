@@ -10,12 +10,12 @@ use serde_json::to_string;
 
 use crate::cache::{format::format_to_mime, Cache};
 
-use self::responses::DiagnosticsResponse;
+use self::responses::{DiagnosticsResponse, IndexResponse};
 
 pub async fn create_document() {}
 pub async fn upload_content() {}
 pub async fn other_routes() -> Response<String> {
-    Response::new("success".into())
+    Response::new(to_string(&IndexResponse { success: true }).unwrap())
 }
 
 pub async fn get_asset(

@@ -36,4 +36,18 @@ export default class RustNetwork {
         const data = await body.json()
         return data;
     }
+
+    async getLatency() {
+        const start = process.hrtime.bigint();
+
+        const {
+            body
+        } = await request(`${this.url}`)
+
+        const _ = await body.json()
+
+        const time = (process.hrtime.bigint() - start);
+
+        return time;
+    }
 }

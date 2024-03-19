@@ -2,7 +2,7 @@ use serde::Serialize;
 
 #[derive(Serialize)]
 pub struct IndexResponse {
-    success: bool,
+    pub success: bool,
 }
 
 #[derive(Serialize)]
