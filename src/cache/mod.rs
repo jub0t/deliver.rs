@@ -1,5 +1,6 @@
 pub mod format;
 pub mod load;
+pub mod types;
 
 use std::{collections::HashMap, fs, sync::atomic::AtomicUsize, time::SystemTime};
 
@@ -12,20 +13,7 @@ use crate::{
 use colored::*;
 use serde::{Deserialize, Serialize};
 
-#[derive(Clone, Serialize, Deserialize)]
-pub enum ImageFormat {
-    PNG,
-    JPEG,
-}
-
-#[derive(Clone, Serialize, Deserialize)]
-pub enum FileFormat {
-    CSS,
-    JS,
-    HTML,
-    IMAGE(ImageFormat),
-    None,
-}
+use self::types::FileFormat;
 
 #[derive(Clone, Serialize, Deserialize)]
 pub struct File {

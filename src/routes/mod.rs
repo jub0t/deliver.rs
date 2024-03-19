@@ -7,7 +7,10 @@ use axum::{
 use serde::Serialize;
 use serde_json::to_string;
 
-use crate::cache::{Cache, File, FileFormat, ImageFormat};
+use crate::cache::{
+    types::{FileFormat, ImageFormat},
+    Cache, File,
+};
 
 #[derive(Serialize)]
 pub struct IndexResponse {

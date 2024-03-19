@@ -1,5 +1,5 @@
 // Import the FileFormat enum from the super module
-use super::{FileFormat, ImageFormat};
+use super::{types::ImageFormat, FileFormat};
 
 // Convert a FileFormat enum variant to its corresponding string representation
 pub fn format_to_string(f: FileFormat) -> String {
@@ -16,7 +16,7 @@ pub fn format_to_string(f: FileFormat) -> String {
             }
         },
 
-        FileFormat::None => String::new(),
+        _ => String::new(),
     }
 }
 
