@@ -164,4 +164,8 @@ impl Cache {
 
         return size;
     }
+
+    pub fn item_count(&self) -> usize {
+        return self.files.len();
+    }
 }

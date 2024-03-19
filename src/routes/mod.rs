@@ -15,7 +15,7 @@ use crate::cache::{
 #[derive(Serialize)]
 pub struct IndexResponse {
     pub bytes_cached: usize,
-    data: Vec<File>,
+    pub total_files: usize,
 }
 
 pub async fn create_document() {}
@@ -33,6 +33,9 @@ pub async fn get_asset(
 
     match file {
         None => {
+            // File is not found in cache.
+            // Let's re-cache the file and send back.
+
             return ([("content-type", "text/plain")], Vec::new());
         }
         Some(file) => {
@@ -63,11 +66,10 @@ pub async fn get_asset(
 
 pub async fn get_all_assets(state: Arc<Mutex<Cache>>) -> Response<String> {
     let cache = state.lock().unwrap();
-    let files = cache.as_vec();
 
     let r = IndexResponse {
         bytes_cached: cache.size(),
-        data: files,
+        total_files: cache.item_count(),
     };
 
     let data = to_string(&r).unwrap();
