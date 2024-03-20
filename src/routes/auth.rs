@@ -1,9 +1,9 @@
 use std::sync::{Arc, Mutex};
 
-use axum::{extract::Path, response::IntoResponse, Json};
+use axum::{response::IntoResponse, Json};
 use serde::Deserialize;
 
-use crate::{cache::Cache, db::Database};
+use crate::{db::Database};
 
 #[derive(Deserialize)]
 pub struct CreateUserPayload {
@@ -13,7 +13,7 @@ pub struct CreateUserPayload {
 
 pub async fn authenticate(
     state: Arc<Mutex<Database>>,
-    Json(payload): Json<CreateUserPayload>,
+    Json(_payload): Json<CreateUserPayload>,
 ) -> impl IntoResponse {
-    let db = state.lock().unwrap();
+    let _db = state.lock().unwrap();
 }

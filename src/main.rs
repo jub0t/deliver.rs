@@ -33,6 +33,7 @@ async fn main() {
     });
 
     let cache1 = Arc::clone(&shared_cache.clone());
+    let cache_all = Arc::clone(&shared_cache.clone());
 
     let app = Router::new()
         .route(
@@ -43,6 +44,7 @@ async fn main() {
             "/diagnostics",
             get(move || routes::diagnostics(shared_cache)),
         )
+        .route("/list-assets", get(move || routes::list_assets(cache_all)))
         .route("/create-document", post(routes::create_document))
         .route("/upload-content", post(routes::upload_content))
         .route(

@@ -1,5 +1,5 @@
 build:
-	cargo build --release --color never --quiet
+	cargo build --release --verbose
 
 run:
 	./target/release/cdn

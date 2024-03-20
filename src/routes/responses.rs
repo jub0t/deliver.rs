@@ -1,5 +1,7 @@
 use serde::Serialize;
 
+use crate::cache::File;
+
 #[derive(Serialize)]
 pub struct IndexResponse {
     pub success: bool,
@@ -9,4 +11,9 @@ pub struct IndexResponse {
 pub struct DiagnosticsResponse {
     pub bytes_cached: usize,
     pub total_files: usize,
+}
+
+#[derive(Serialize)]
+pub struct ListAllResponse {
+    pub(crate) files: Vec<File>,
 }

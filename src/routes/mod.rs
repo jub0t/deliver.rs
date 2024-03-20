@@ -11,7 +11,7 @@ use serde_json::to_string;
 
 use crate::cache::{format::format_to_mime, Cache};
 
-use self::responses::{DiagnosticsResponse, IndexResponse};
+use self::responses::{DiagnosticsResponse, IndexResponse, ListAllResponse};
 
 pub async fn create_document() {}
 pub async fn upload_content() {}
@@ -51,5 +51,15 @@ pub async fn diagnostics(state: Arc<Mutex<Cache>>) -> Response<String> {
     };
 
     let data = to_string(&r).unwrap();
+    Response::new(data)
+}
+
+pub async fn list_assets(state: Arc<Mutex<Cache>>) -> Response<String> {
+    let cache = state.lock().unwrap();
+    let files = cache.as_contentless_vec();
+
+    let r = ListAllResponse { files };
+    let data = to_string(&r).unwrap();
+
     Response::new(data)
 }

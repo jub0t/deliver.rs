@@ -75,6 +75,22 @@ impl Cache {
         self.files.values().cloned().collect()
     }
 
+    pub fn as_contentless_vec(&self) -> Vec<File> {
+        let clean = self
+            .files
+            .values()
+            .cloned()
+            .into_iter()
+            .map(|f| {
+                let mut n = f;
+                n.contents = Vec::new();
+                n
+            })
+            .collect();
+
+        return clean;
+    }
+
     pub fn cache(&mut self, document: String, filename: String, options: CacheOptions) -> bool {
         let full_path = format!("{}{}/{}", STORE, document, filename);
         let mut extension: FileFormat = FileFormat::None;
