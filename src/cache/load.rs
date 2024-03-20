@@ -17,7 +17,7 @@ pub fn load_into(cache: &mut Cache) {
                     }
                     Ok(document) => {
                         let name = document.file_name().to_str().unwrap().to_string();
-                        println!("- {} {:#}", "Document:".blue(), name);
+                        println!("{} {:#}", "[DOCUMENT]:".blue(), name);
 
                         // let path = format!("{}{}", STORE, name);
                         // let new_path = format!("{}{}", STORE, nanoid!(10));

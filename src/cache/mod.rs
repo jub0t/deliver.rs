@@ -89,9 +89,7 @@ impl Cache {
         }
 
         match fs::read(full_path) {
-            Err(_) => {
-                false
-            }
+            Err(_) => false,
             Ok(data) => {
                 let mut contents = data.clone();
                 let hash = match self.hasher.hash(contents.clone()) {
@@ -148,8 +146,8 @@ impl Cache {
                 self.files.insert(key, file.clone());
 
                 println!(
-                    "   - {} [Name: {}] [Size: {}] [Hash: {}]",
-                    "File:".green(),
+                    "   {} [Name: {}] [Size: {}] [Hash: {}]",
+                    "[FILE]:".green(),
                     filename.bright_black(),
                     file.contents.len().to_string().bright_black(),
                     hash.clone().to_string().bright_black(),
