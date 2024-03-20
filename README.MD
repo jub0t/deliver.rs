@@ -1,5 +1,5 @@
 ![Banner](./banner.png)
-![Diagram](./diagram.svg)
+![Diagram](./diagram.png)
 
 ## Formats
 

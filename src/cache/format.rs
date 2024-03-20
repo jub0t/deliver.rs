@@ -1,6 +1,8 @@
 // Import the FileFormat enum from the super module
 use super::{
-    types::{ArchiveFormats, AudioFormats, DocumentFormats, FeedFormats, ImageFormat},
+    types::{
+        ArchiveFormats, AudioFormats, DocumentFormats, FeedFormats, ImageFormat, VideoFormats,
+    },
     FileFormat,
 };
 
@@ -27,6 +29,7 @@ pub fn string_to_format(s: &str) -> Option<FileFormat> {
         "js" => Some(FileFormat::JS),
         "png" => Some(FileFormat::IMAGE(ImageFormat::PNG)),
         "jpeg" => Some(FileFormat::IMAGE(ImageFormat::JPEG)),
+        "mp4" => Some(FileFormat::VIDEO(VideoFormats::MP4)),
         _ => None, // Return None for unrecognized formats
     }
 }
@@ -59,5 +62,8 @@ pub fn format_to_mime(ft: FileFormat) -> String {
         FileFormat::JS => "text/javascript".to_string(),
         FileFormat::CSS => "text/css".to_string(),
         FileFormat::None => "application/text".to_string(),
+        FileFormat::VIDEO(vid_fmt) => match vid_fmt {
+            VideoFormats::MP4 => "video/mp4".to_string(),
+        },
     }
 }

@@ -32,7 +32,7 @@ pub fn start(cache: Arc<Mutex<Cache>>) {
         for key in expired_files {
             cache_lock.delete(key);
             println!(
-                "{} File Expired, Removed: [Hash: {:#?}]",
+                "{} File Expired, Removed: [Hash: {}]",
                 "[CACHE]:".yellow(),
                 key.to_string().bright_black()
             );

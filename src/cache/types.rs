@@ -20,6 +20,11 @@ pub enum DocumentFormats {
 }
 
 #[derive(Clone, Serialize, Deserialize)]
+pub enum VideoFormats {
+    MP4,
+}
+
+#[derive(Clone, Serialize, Deserialize)]
 pub enum ArchiveFormats {
     RAR,
     ZIP,
@@ -42,5 +47,6 @@ pub enum FileFormat {
     AUDIO(AudioFormats),
     ARCHIVE(ArchiveFormats),
     FEED(FeedFormats),
+    VIDEO(VideoFormats),
     None,
 }
