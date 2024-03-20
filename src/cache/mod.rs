@@ -36,7 +36,7 @@ pub struct Cache {
     minifer: Minifier,
 }
 
-pub type FileKey = HashSize;
+pub type FileKey = String;
 pub type FileMap = HashMap<FileKey, File>;
 
 impl Default for Cache {
@@ -57,9 +57,9 @@ impl Cache {
 
     pub fn get(&self, document: String, filename: String) -> Option<&File> {
         let key = format!("{}:{}", document, filename);
-        let hash = &self.hasher.hash(key.as_bytes().to_vec()).unwrap();
+        // let hash = &self.hasher.hash(key.as_bytes().to_vec()).unwrap();
 
-        let file = self.files.get(hash);
+        let file = self.files.get(&key);
         file
     }
 
@@ -123,15 +123,16 @@ impl Cache {
                     }
                 }
 
-                let key = self
-                    .hasher
-                    .hash(
-                        (format!("{}:{}", document, filename))
-                            .as_bytes()
-                            .to_vec()
-                            .clone(),
-                    )
-                    .unwrap();
+                // let key = self
+                //     .hasher
+                //     .hash(
+                //         (format!("{}:{}", document, filename))
+                //             .as_bytes()
+                //             .to_vec()
+                //             .clone(),
+                //     )
+                //     .unwrap();
+                let key = format!("{}:{}", document, filename);
 
                 let file = File {
                     hash,
@@ -140,7 +141,7 @@ impl Cache {
                     name: filename.clone(),
                     contents: contents.clone(),
                     created: SystemTime::now(),
-                    key,
+                    key: key.clone(),
                 };
 
                 self.files.insert(key, file.clone());

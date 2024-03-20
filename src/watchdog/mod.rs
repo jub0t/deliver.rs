@@ -22,7 +22,7 @@ pub fn start(cache: Arc<Mutex<Cache>>) {
             .filter_map(|(key, file)| {
                 if let Ok(elapsed) = file.created.elapsed() {
                     if elapsed.as_secs() > MAX_CACHE_TIME {
-                        return Some(*key);
+                        return Some(key.to_owned());
                     }
                 }
                 None
@@ -30,7 +30,7 @@ pub fn start(cache: Arc<Mutex<Cache>>) {
             .collect();
 
         for key in expired_files {
-            cache_lock.delete(key);
+            cache_lock.delete(key.clone());
             println!(
                 "{} File Expired, Removed: [Hash: {}]",
                 "[CACHE]:".yellow(),
