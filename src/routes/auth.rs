@@ -1,4 +1,4 @@
-use std::sync::{Arc, Mutex};
+use std::sync::Arc;
 
 use axum::{http::Response, response::IntoResponse, Json};
 use colored::Colorize;
@@ -33,39 +33,33 @@ pub async fn authenticate(
     let username = payload.username;
 
     match db.get_by_username(username.as_str()) {
-        None => {
-            return Response::new(
-                to_string(&AuthenticatedResponse {
-                    success: false,
-                    token: None,
-                })
-                .unwrap(),
-            );
-        }
+        None => Response::new(
+            to_string(&AuthenticatedResponse {
+                success: false,
+                token: None,
+            })
+            .unwrap(),
+        ),
         Some(user) => {
             println!("{} Authenticating: {:#?}", "[AUTH]:".cyan(), user.username);
             match generate_token(username.as_str()) {
-                Err(e) => {
-                    return Response::new(
-                        to_string(&AuthenticatedResponse {
-                            success: false,
-                            token: None,
-                        })
-                        .unwrap(),
-                    );
-                }
-                Ok(token) => {
-                    return Response::new(
-                        to_string(&AuthenticatedResponse {
-                            success: true,
-                            token: Some(token),
-                        })
-                        .unwrap(),
-                    );
-                }
-            };
+                Err(_e) => Response::new(
+                    to_string(&AuthenticatedResponse {
+                        success: false,
+                        token: None,
+                    })
+                    .unwrap(),
+                ),
+                Ok(token) => Response::new(
+                    to_string(&AuthenticatedResponse {
+                        success: true,
+                        token: Some(token),
+                    })
+                    .unwrap(),
+                ),
+            }
         }
-    };
+    }
 }
 
 pub async fn create_user(
@@ -85,10 +79,8 @@ pub async fn create_user(
     match db.create_user(new_user) {
         Err(sql_error) => {
             println!("Create User Error: {:#?}", sql_error);
-            return Response::new(to_string(&IndexResponse { success: false }).unwrap());
+            Response::new(to_string(&IndexResponse { success: false }).unwrap())
         }
-        Ok(resp) => {
-            return Response::new(to_string(&IndexResponse { success: true }).unwrap());
-        }
-    };
+        Ok(_resp) => Response::new(to_string(&IndexResponse { success: true }).unwrap()),
+    }
 }

@@ -7,7 +7,6 @@ pub mod minify;
 pub mod routes;
 pub mod watchdog;
 
-use axum::extract::{Extension, State};
 use axum::{
     routing::{get, post},
     Router,

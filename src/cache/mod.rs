@@ -2,7 +2,7 @@ pub mod format;
 pub mod load;
 pub mod types;
 
-use std::{collections::HashMap, fs, sync::Arc, time::SystemTime};
+use std::{collections::HashMap, fs, time::SystemTime};
 
 use crate::{
     cache::format::string_to_format,
@@ -82,7 +82,6 @@ impl Cache {
             .files
             .values()
             .cloned()
-            .into_iter()
             .map(|f| {
                 let mut n = f;
                 n.contents = Vec::new();
@@ -90,7 +89,7 @@ impl Cache {
             })
             .collect();
 
-        return clean;
+        clean
     }
 
     pub fn cache(&mut self, document: String, filename: String, options: CacheOptions) -> bool {

@@ -1,4 +1,4 @@
-use std::fmt::Error;
+
 
 use crate::auth::{documents::AllowedDocuments, user::User};
 use rusqlite::Connection;
@@ -38,11 +38,11 @@ impl Database {
         ) {
             Err(error) => {
                 println!("Problem Creating New User: {:#?}", error);
-                return Err(error);
+                Err(error)
             }
             Ok(resp) => {
                 println!("New User Created: {}", resp); // just for now
-                return Ok(resp);
+                Ok(resp)
             }
         }
     }
@@ -50,7 +50,7 @@ impl Database {
     pub fn get_by_username(&self, username: &str) -> Option<User> {
         match self.conn.query_row(
             "SELECT * FROM users WHERE username = ?1",
-            &[username],
+            [username],
             |row| {
                 let username: String = row.get(0)?;
                 let password: String = row.get(1)?;
