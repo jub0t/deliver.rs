@@ -1,6 +1,7 @@
 use std::sync::{Arc, Mutex};
 
 use axum::{http::Response, response::IntoResponse, Json};
+use colored::Colorize;
 use futures::lock::Mutex as AsyncMutex;
 use serde::{Deserialize, Serialize};
 use serde_json::to_string;
@@ -31,14 +32,6 @@ pub async fn authenticate(
     let db = state.lock().await;
     let username = payload.username;
 
-    let new_user = User {
-        allowed_docs: AllowedDocuments::new(),
-        password: "admin".to_string(),
-        username: "admin".to_string(),
-    };
-    let user_created = db.create_user(new_user);
-    println!("New User: {:#?}", user_created);
-
     match db.get_by_username(username.as_str()) {
         None => {
             return Response::new(
@@ -50,7 +43,7 @@ pub async fn authenticate(
             );
         }
         Some(user) => {
-            println!("AUTH {:#?}", user);
+            println!("{} Authenticating: {:#?}", "[AUTH]:".cyan(), user.username);
             match generate_token(username.as_str()) {
                 Err(e) => {
                     return Response::new(
