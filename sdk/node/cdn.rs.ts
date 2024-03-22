@@ -18,6 +18,7 @@ export default class RustNetwork {
         return data;
     }
 
+
     // Authentication
     async authenticate(username: String, password: String) {
         const {
@@ -37,6 +38,25 @@ export default class RustNetwork {
         return data;
     }
 
+    async createUser(username: String, password: String) {
+        const {
+            body
+        } = await request(`${this.url}/create-user`, {
+            method: "POST",
+            headers: {
+                ...JsonHeader
+            },
+            body: JSON.stringify({
+                username,
+                password
+            })
+        })
+
+        const data = await body.json()
+        return data;
+    }
+
+    //  Other
     async getLatency() {
         const start = process.hrtime.bigint();
 

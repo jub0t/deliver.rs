@@ -2,7 +2,7 @@ pub mod format;
 pub mod load;
 pub mod types;
 
-use std::{collections::HashMap, fs, time::SystemTime};
+use std::{collections::HashMap, fs, sync::Arc, time::SystemTime};
 
 use crate::{
     cache::format::string_to_format,
@@ -25,6 +25,8 @@ pub struct File {
     pub created: SystemTime,
     pub contents: Vec<u8>,
 }
+
+impl File {}
 
 pub struct CacheOptions {
     pub minify: bool,

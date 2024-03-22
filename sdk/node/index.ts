@@ -8,4 +8,11 @@ async function main() {
 
     const diagnostics = await cdn.getDiagnostics();
     console.log(diagnostics)
+
+    const new_user = await cdn.createUser("admin", "admin");
+    console.log(new_user)
+
+    const auth = await cdn.authenticate("admin", "admin");
+    console.log(auth)
+
 } main();

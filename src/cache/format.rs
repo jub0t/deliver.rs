@@ -30,6 +30,9 @@ pub fn string_to_format(s: &str) -> Option<FileFormat> {
         "png" => Some(FileFormat::IMAGE(ImageFormat::PNG)),
         "jpeg" => Some(FileFormat::IMAGE(ImageFormat::JPEG)),
         "mp4" => Some(FileFormat::VIDEO(VideoFormats::MP4)),
+        "json" => Some(FileFormat::FEED(FeedFormats::JSON)),
+        "xml" => Some(FileFormat::FEED(FeedFormats::XML)),
+        "yaml" => Some(FileFormat::FEED(FeedFormats::YAML)),
         _ => None, // Return None for unrecognized formats
     }
 }

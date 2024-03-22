@@ -7,12 +7,14 @@ pub mod minify;
 pub mod routes;
 pub mod watchdog;
 
+use axum::extract::{Extension, State};
 use axum::{
     routing::{get, post},
     Router,
 };
 use cache::{load::load_into, Cache};
 use colored::Colorize;
+use futures::lock::Mutex as AsyncMutex;
 use std::{
     sync::{Arc, Mutex},
     thread,
@@ -24,8 +26,10 @@ async fn main() {
     load_into(&mut cache);
 
     let shared_cache = Arc::new(Mutex::new(cache));
+
     let db = db::Database::new();
-    let db_arc = Arc::new(Mutex::new(db));
+    let db_arc = Arc::new(AsyncMutex::new(db));
+    let db_arc_cloned = Arc::clone(&db_arc);
 
     let watchdog_cache = Arc::clone(&shared_cache);
     thread::spawn(move || {
@@ -50,6 +54,10 @@ async fn main() {
         .route(
             "/authenticate",
             post(move |body| routes::auth::authenticate(db_arc, body)),
+        )
+        .route(
+            "/create-user",
+            post(move |body| routes::auth::create_user(db_arc_cloned, body)),
         )
         .route("/", get(routes::other_routes));
 
