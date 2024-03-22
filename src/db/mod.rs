@@ -1,6 +1,5 @@
-
-
 use crate::auth::{documents::AllowedDocuments, user::User};
+use colored::Colorize;
 use rusqlite::Connection;
 
 #[derive()]
@@ -25,7 +24,12 @@ impl Database {
             );",
             [],
         );
-        println!("USER TABLE: {:?}", user_table);
+
+        println!(
+            "{} TABLE CREATED: {:?}",
+            "[DATABASE]:".yellow(),
+            user_table.unwrap() == 0
+        );
 
         Database { conn }
     }
