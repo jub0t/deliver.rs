@@ -3,11 +3,14 @@ import { JsonHeader } from "./misc"
 
 export default class RustNetwork {
     private url: String;
+    private token?: String;
+    private userInfo?: {
+        username: String
+    }
 
     constructor(url: String) {
         this.url = url;
     }
-
 
     // Misc
     async getDiagnostics() {
@@ -17,7 +20,6 @@ export default class RustNetwork {
         const data = await body.json()
         return data;
     }
-
 
     // Authentication
     async authenticate(username: String, password: String) {
@@ -34,7 +36,15 @@ export default class RustNetwork {
             })
         })
 
-        const data = await body.json()
+        const data: any = await body.json()
+
+        if (data.success) {
+            this.token = data.token;
+            this.userInfo = {
+                username,
+            }
+        }
+
         return data;
     }
 

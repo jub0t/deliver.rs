@@ -9,12 +9,14 @@ use axum::{
 };
 use serde_json::to_string;
 
-use crate::cache::{format::format_to_mime, Cache};
+use crate::cache::{format::format_to_mime, Cache, CacheOptions};
 
 use self::responses::{DiagnosticsResponse, IndexResponse, ListAllResponse};
 
 pub async fn create_document() {}
+
 pub async fn upload_content() {}
+
 pub async fn other_routes() -> Response<String> {
     Response::new(to_string(&IndexResponse { success: true }).unwrap())
 }
@@ -23,13 +25,14 @@ pub async fn get_asset(
     state: Arc<Mutex<Cache>>,
     Path((docid, assid)): Path<(String, String)>,
 ) -> impl IntoResponse {
-    let cache = state.lock().unwrap();
+    let mut cache = state.lock().unwrap();
     let file = cache.get(docid.clone(), assid.clone());
 
     match file {
         None => {
             // File is not found in cache.
             // Let's re-cache the file and send back.
+            cache.cache(docid, assid, CacheOptions { minify: true });
 
             ([("content-type", "text/plain".to_string())], Vec::new())
         }

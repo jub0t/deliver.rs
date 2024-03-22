@@ -11,7 +11,7 @@ use crate::{
     db::Database,
 };
 
-use super::responses::IndexResponse;
+use super::responses::MessageResponse;
 
 #[derive(Deserialize)]
 pub struct CreateUserPayload {
@@ -77,10 +77,33 @@ pub async fn create_user(
     };
 
     match db.create_user(new_user) {
-        Err(sql_error) => {
-            println!("Create User Error: {:#?}", sql_error);
-            Response::new(to_string(&IndexResponse { success: false }).unwrap())
-        }
-        Ok(_resp) => Response::new(to_string(&IndexResponse { success: true }).unwrap()),
+        Err(sql_error) => match sql_error {
+            rusqlite::Error::QueryReturnedNoRows => {
+                return Response::new(
+                    to_string(&MessageResponse {
+                        success: false,
+                        message: "User already exists".to_string(),
+                    })
+                    .unwrap(),
+                );
+            }
+
+            _ => {
+                return Response::new(
+                    to_string(&MessageResponse {
+                        success: false,
+                        message: sql_error.to_string(),
+                    })
+                    .unwrap(),
+                );
+            }
+        },
+        Ok(_) => Response::new(
+            to_string(&MessageResponse {
+                success: true,
+                message: "".to_string(),
+            })
+            .unwrap(),
+        ),
     }
 }

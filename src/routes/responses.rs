@@ -3,6 +3,12 @@ use serde::Serialize;
 use crate::cache::File;
 
 #[derive(Serialize)]
+pub struct MessageResponse {
+    pub success: bool,
+    pub message: String,
+}
+
+#[derive(Serialize)]
 pub struct IndexResponse {
     pub success: bool,
 }

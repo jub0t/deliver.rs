@@ -13,7 +13,10 @@ use crate::{
 use colored::*;
 use serde::{Deserialize, Serialize};
 
-use self::types::FileFormat;
+use self::{
+    format::{format_to_mime, format_to_string},
+    types::FileFormat,
+};
 
 #[derive(Clone, Serialize, Deserialize)]
 pub struct File {
@@ -26,7 +29,23 @@ pub struct File {
     pub contents: Vec<u8>,
 }
 
-impl File {}
+impl File {
+    pub fn set_name(&mut self, name: String) {
+        self.name = name
+    }
+
+    pub fn set_contents(&mut self, contents: Vec<u8>) {
+        self.contents = contents
+    }
+
+    pub fn get_extension(&self) -> String {
+        format_to_string(self.format)
+    }
+
+    pub fn get_mime(&self) -> String {
+        format_to_mime(self.format)
+    }
+}
 
 pub struct CacheOptions {
     pub minify: bool,

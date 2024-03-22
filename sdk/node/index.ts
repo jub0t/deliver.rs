@@ -14,5 +14,4 @@ async function main() {
 
     const auth = await cdn.authenticate("admin", "admin");
     console.log(auth)
-
 } main();
