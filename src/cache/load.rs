@@ -6,8 +6,22 @@ use colored::*;
 
 pub fn load_into(cache: &mut Cache) {
     match fs::read_dir(STORE) {
-        Err(error) => {
-            println!("{:#?}", error)
+        Err(_) => {
+            match fs::create_dir(STORE) {
+                Ok(_) => {
+                    println!(
+                        "{} Initialized New Directory For Cache Storage at {:#?}, Re-run.",
+                        "[CACHE]:".purple(),
+                        STORE,
+                    )
+                }
+                Err(_) => {
+                    println!(
+                        "{} Attempted To Create Cache Directory",
+                        "[CACHE]:".purple()
+                    )
+                }
+            };
         }
         Ok(dirs) => {
             for i in dirs.into_iter() {
@@ -32,6 +46,8 @@ pub fn load_into(cache: &mut Cache) {
                     }
                 }
             }
+
+            println!("{} Assets Loaded Into Cache", "[CACHE]:".purple());
         }
     };
 }

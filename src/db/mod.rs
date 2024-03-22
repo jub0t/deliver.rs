@@ -26,7 +26,7 @@ impl Database {
         );
 
         println!(
-            "{} TABLE CREATED: {:?}",
+            "{} USER TABLE CREATED: {:?}",
             "[DATABASE]:".yellow(),
             user_table.unwrap() == 0
         );
