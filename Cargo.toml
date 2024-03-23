@@ -41,5 +41,5 @@ features = [
 [profile.release]
 strip = true
 opt-level = 3
-lto = true
+lto = false
 # codegen-units = 1
