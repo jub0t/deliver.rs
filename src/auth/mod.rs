@@ -2,6 +2,7 @@ pub mod documents;
 pub mod user;
 
 use chrono::{Duration, TimeDelta, Utc};
+use colored::Colorize;
 use jsonwebtoken::{decode, encode, DecodingKey, EncodingKey, Header, TokenData, Validation};
 
 use crate::config::TOKEN_EXPIRE_TIME;
@@ -18,10 +19,7 @@ pub fn generate_token(username: &str) -> Result<String, String> {
     let max_token_expire = TOKEN_EXPIRE_TIME.unwrap(); // Default token expiration to 1 day
     let expiration = Utc::now() + max_token_expire;
 
-    let claims = UserClaims {
-        // username: username.to_string(),
-        exp: expiration.timestamp() as usize,
-    };
+    let claims = UserClaims::new(expiration.timestamp_micros() as usize);
 
     encode(
         &Header::default(),
@@ -38,11 +36,11 @@ pub fn validate_token(token: &str) -> bool {
         &Validation::default(),
     ) {
         Err(error) => {
-            println!("{:#?}", error);
+            println!("{} JsonWebToken Error: {:#?}", "[AUTH]:".cyan(), error);
             return false;
         }
+
         Ok(TokenData { claims, .. }) => {
-            println!("token is correct 0x14");
             let now = Utc::now().timestamp() as usize;
             claims.exp > now
         }

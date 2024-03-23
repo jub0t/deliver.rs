@@ -1,5 +1,5 @@
 build:
-	cargo build --release --verbose
+	cargo build --release
 
 run:
 	./target/release/cdn

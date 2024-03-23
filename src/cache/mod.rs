@@ -169,7 +169,6 @@ impl Cache {
                 //     )
                 //     .unwrap();
                 let key = format!("{}:{}", document, filename);
-
                 let file = File {
                     hash,
                     document: document.clone(),

@@ -13,3 +13,9 @@ pub struct User {
 pub struct UserClaims {
     pub exp: usize,
 }
+
+impl UserClaims {
+    pub fn new(exp: usize) -> Self {
+        return Self { exp };
+    }
+}
