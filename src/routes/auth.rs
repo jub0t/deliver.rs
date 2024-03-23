@@ -1,7 +1,6 @@
 use std::sync::Arc;
 
 use axum::{http::Response, response::IntoResponse, Json};
-use colored::Colorize;
 use futures::lock::Mutex as AsyncMutex;
 use serde::{Deserialize, Serialize};
 use serde_json::to_string;
@@ -40,25 +39,22 @@ pub async fn authenticate(
             })
             .unwrap(),
         ),
-        Some(user) => {
-            println!("{} Authenticating: {:#?}", "[AUTH]:".cyan(), user.username);
-            match generate_token(username.as_str()) {
-                Err(_e) => Response::new(
-                    to_string(&AuthenticatedResponse {
-                        success: false,
-                        token: None,
-                    })
-                    .unwrap(),
-                ),
-                Ok(token) => Response::new(
-                    to_string(&AuthenticatedResponse {
-                        success: true,
-                        token: Some(token),
-                    })
-                    .unwrap(),
-                ),
-            }
-        }
+        Some(_) => match generate_token(username.as_str()) {
+            Err(_e) => Response::new(
+                to_string(&AuthenticatedResponse {
+                    success: false,
+                    token: None,
+                })
+                .unwrap(),
+            ),
+            Ok(token) => Response::new(
+                to_string(&AuthenticatedResponse {
+                    success: true,
+                    token: Some(token),
+                })
+                .unwrap(),
+            ),
+        },
     }
 }
 
@@ -78,25 +74,21 @@ pub async fn create_user(
 
     match db.create_user(new_user) {
         Err(sql_error) => match sql_error {
-            rusqlite::Error::QueryReturnedNoRows => {
-                Response::new(
-                    to_string(&MessageResponse {
-                        success: false,
-                        message: "User already exists".to_string(),
-                    })
-                    .unwrap(),
-                )
-            }
+            rusqlite::Error::QueryReturnedNoRows => Response::new(
+                to_string(&MessageResponse {
+                    success: false,
+                    message: "User already exists".to_string(),
+                })
+                .unwrap(),
+            ),
 
-            _ => {
-                Response::new(
-                    to_string(&MessageResponse {
-                        success: false,
-                        message: sql_error.to_string(),
-                    })
-                    .unwrap(),
-                )
-            }
+            _ => Response::new(
+                to_string(&MessageResponse {
+                    success: false,
+                    message: sql_error.to_string(),
+                })
+                .unwrap(),
+            ),
         },
         Ok(_) => Response::new(
             to_string(&MessageResponse {

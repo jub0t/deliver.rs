@@ -94,9 +94,7 @@ export default class RustNetwork {
 
     async getAsset(document: String, id: String): Promise<FileWrapper> {
         const req = await request(`${this.url}/${document}/${id}`)
-        const body: Body = req.body;
-
-        const fw = new FileWrapper(body);
+        const fw = new FileWrapper(req.body);
         await fw.cacheBuffer();
 
         return fw

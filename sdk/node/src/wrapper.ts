@@ -22,16 +22,16 @@ class FileWrapper {
 
 
     /**
-     * Converts the contents of the "Asset" to JSON with fallback support.
+     * Converts the contents of the "Asset" to JSON.
      * Do not call this method on assets that can not be converted to JSON.
      * @param fallback Object
      * @returns Object
      */
-    toJson(fallback: Object = {}): Object {
+    toJson(): Object | null {
         try {
             return JSON.parse(this.toString())
         } catch {
-            return fallback
+            return null
         }
     }
 
