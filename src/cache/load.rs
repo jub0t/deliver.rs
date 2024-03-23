@@ -24,6 +24,7 @@ pub fn load_into(cache: &mut Cache) {
                 }
             };
         }
+
         Ok(dirs) => {
             for i in dirs.into_iter() {
                 match i {
