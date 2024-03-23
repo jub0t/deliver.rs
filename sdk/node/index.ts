@@ -12,8 +12,8 @@ async function main() {
     // const new_user = await cdn.createUser("admin", "admin");
     // console.log(new_user)
 
-    // const auth = await cdn.authenticate("admin", "admin");
-    // console.log(auth)
+    const auth = await cdn.authenticate("admin", "admin");
+    console.log(auth)
 
     cdn.getAsset("04ac3e7e-19ec-4f63-ba39-fa1a1e2af148", "manifest.json").then(manifest => {
         const json = manifest.toJson({});

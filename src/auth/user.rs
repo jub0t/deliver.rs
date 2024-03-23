@@ -9,8 +9,7 @@ pub struct User {
     pub allowed_docs: AllowedDocuments,
 }
 
-#[derive(Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize)]
 pub struct UserClaims {
-    pub username: String,
-    pub expire: usize,
+    pub exp: usize,
 }

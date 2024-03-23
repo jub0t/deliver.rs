@@ -4,16 +4,57 @@ pub mod responses;
 use std::sync::{Arc, Mutex};
 
 use axum::{
-    extract::Path,
+    extract::{Path, Request},
     response::{IntoResponse, Response},
 };
 use serde_json::to_string;
 
-use crate::cache::{format::format_to_mime, Cache, CacheOptions};
+use crate::{
+    auth::validate_token,
+    cache::{format::format_to_mime, Cache, CacheOptions},
+};
 
-use self::responses::{DiagnosticsResponse, IndexResponse, ListAllResponse};
+use self::responses::{DiagnosticsResponse, IndexResponse, ListAllResponse, MessageResponse};
 
-pub async fn create_document() {}
+pub async fn create_document(req: Request) -> impl IntoResponse {
+    let headers = req.headers();
+    let token = headers.get("token");
+
+    match token {
+        None => {
+            return Response::new(
+                to_string(&MessageResponse {
+                    message: "Token not found headers".to_string(),
+                    success: false,
+                })
+                .unwrap(),
+            );
+        }
+        Some(token) => {
+            let raw = token.to_str().unwrap();
+            println!("{}", raw);
+            let is_valid = validate_token(raw);
+
+            if is_valid {
+                return Response::new(
+                    to_string(&MessageResponse {
+                        message: "Token Is Valid".to_string(),
+                        success: true,
+                    })
+                    .unwrap(),
+                );
+            } else {
+                return Response::new(
+                    to_string(&MessageResponse {
+                        message: "Invalid JsonWebToken".to_string(),
+                        success: true,
+                    })
+                    .unwrap(),
+                );
+            }
+        }
+    }
+}
 
 pub async fn upload_content() {}
 

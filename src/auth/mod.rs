@@ -1,8 +1,8 @@
 pub mod documents;
 pub mod user;
 
-use chrono::Utc;
-use jsonwebtoken::{encode, EncodingKey, Header};
+use chrono::{Duration, TimeDelta, Utc};
+use jsonwebtoken::{decode, encode, DecodingKey, EncodingKey, Header, TokenData, Validation};
 
 use crate::config::TOKEN_EXPIRE_TIME;
 use argon2::{
@@ -12,22 +12,41 @@ use argon2::{
 
 use self::user::UserClaims;
 
+const SECRET_KEY: &[u8] = b"secret";
+
 pub fn generate_token(username: &str) -> Result<String, String> {
-    let max_token_expire = TOKEN_EXPIRE_TIME.unwrap();
+    let max_token_expire = TOKEN_EXPIRE_TIME.unwrap(); // Default token expiration to 1 day
     let expiration = Utc::now() + max_token_expire;
 
     let claims = UserClaims {
-        username: username.to_string(),
-        expire: expiration.timestamp() as usize,
+        // username: username.to_string(),
+        exp: expiration.timestamp() as usize,
     };
 
-    let token = encode(
+    encode(
         &Header::default(),
         &claims,
-        &EncodingKey::from_secret("secret".as_ref()),
+        &EncodingKey::from_secret(SECRET_KEY),
     )
-    .map_err(|e| format!("Token generation error: {}", e))?;
-    Ok(token)
+    .map_err(|e| format!("Token generation error: {}", e))
+}
+
+pub fn validate_token(token: &str) -> bool {
+    match decode::<UserClaims>(
+        &token,
+        &DecodingKey::from_secret(SECRET_KEY),
+        &Validation::default(),
+    ) {
+        Err(error) => {
+            println!("{:#?}", error);
+            return false;
+        }
+        Ok(TokenData { claims, .. }) => {
+            println!("token is correct 0x14");
+            let now = Utc::now().timestamp() as usize;
+            claims.exp > now
+        }
+    }
 }
 
 pub fn hash_string(raw: &str) -> Option<String> {
