@@ -9,6 +9,13 @@ pub struct MessageResponse {
 }
 
 #[derive(Serialize)]
+pub struct CustomDataResponse<T> {
+    pub success: bool,
+    pub message: String,
+    pub data: T,
+}
+
+#[derive(Serialize)]
 pub struct IndexResponse {
     pub success: bool,
 }

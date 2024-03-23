@@ -8,6 +8,7 @@ pub mod routes;
 pub mod watchdog;
 
 use axum::{
+    middleware,
     routing::{get, post},
     Router,
 };
@@ -39,6 +40,9 @@ async fn main() {
     let cache_all = Arc::clone(&shared_cache.clone());
 
     let app = Router::new()
+        .route("/upload-content", post(routes::upload_content))
+        .route("/create-document", post(routes::create_document))
+        .route_layer(middleware::from_fn(routes::middleware::auth_middleware))
         .route(
             "/:document/:id",
             get(move |path| routes::get_asset(cache1, path)),
@@ -48,8 +52,6 @@ async fn main() {
             get(move || routes::diagnostics(shared_cache)),
         )
         .route("/list-assets", get(move || routes::list_assets(cache_all)))
-        .route("/create-document", post(routes::create_document))
-        .route("/upload-content", post(routes::upload_content))
         .route(
             "/authenticate",
             post(move |body| routes::auth::authenticate(db_arc, body)),

@@ -1,57 +1,50 @@
 pub mod auth;
+pub mod middleware;
 pub mod responses;
 
-use std::sync::{Arc, Mutex};
+use std::{
+    fs,
+    sync::{Arc, Mutex},
+};
 
 use axum::{
     extract::{Path, Request},
     response::{IntoResponse, Response},
 };
 use serde_json::to_string;
+use uuid::Uuid;
 
 use crate::{
-    auth::validate_token,
     cache::{format::format_to_mime, Cache, CacheOptions},
+    config::STORE,
 };
 
-use self::responses::{DiagnosticsResponse, IndexResponse, ListAllResponse, MessageResponse};
+use self::responses::{
+    CustomDataResponse, DiagnosticsResponse, IndexResponse, ListAllResponse, MessageResponse,
+};
 
 pub async fn create_document(req: Request) -> impl IntoResponse {
-    let headers = req.headers();
-    let token = headers.get("token");
+    let path = Uuid::new_v4();
 
-    match token {
-        None => {
+    match fs::create_dir(format!("{}/{}", STORE, path)) {
+        Ok(_) => {
             return Response::new(
-                to_string(&MessageResponse {
-                    message: "Token not found headers".to_string(),
-                    success: false,
+                to_string(&CustomDataResponse {
+                    message: "Document Created, Success".to_string(),
+                    success: true,
+                    data: path.to_string(),
                 })
                 .unwrap(),
             );
         }
-        Some(token) => {
-            let raw = token.to_str().unwrap();
-            println!("{}", raw);
-            let is_valid = validate_token(raw);
-
-            if is_valid {
-                return Response::new(
-                    to_string(&MessageResponse {
-                        message: "Token Is Valid".to_string(),
-                        success: true,
-                    })
-                    .unwrap(),
-                );
-            } else {
-                return Response::new(
-                    to_string(&MessageResponse {
-                        message: "Invalid JsonWebToken".to_string(),
-                        success: true,
-                    })
-                    .unwrap(),
-                );
-            }
+        Err(error) => {
+            return Response::new(
+                to_string(&MessageResponse {
+                    message: format!("Internal Server Errro - {:#?}", error),
+                    success: false,
+                })
+                .unwrap(),
+            );
         }
     }
 }
