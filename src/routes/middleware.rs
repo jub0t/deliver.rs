@@ -9,14 +9,14 @@ pub async fn auth_middleware(req: Request, next: Next) -> Result<Response, Statu
 
     match token {
         None => {
-            return Ok(Response::new(
+            Ok(Response::new(
                 to_string(&MessageResponse {
                     message: "Token not found in headers".to_string(),
                     success: false,
                 })
                 .unwrap()
                 .into(),
-            ));
+            ))
         }
         Some(token) => {
             let raw = token.to_str().unwrap();
@@ -25,14 +25,14 @@ pub async fn auth_middleware(req: Request, next: Next) -> Result<Response, Statu
                 let response = next.run(req).await;
                 Ok(response)
             } else {
-                return Ok(Response::new(
+                Ok(Response::new(
                     to_string(&MessageResponse {
                         message: "Invalid JsonWebToken".to_string(),
                         success: true,
                     })
                     .unwrap()
                     .into(),
-                ));
+                ))
             }
         }
     }

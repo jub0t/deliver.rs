@@ -1,5 +1,5 @@
 use std::fs::{self};
-use uuid::Uuid;
+
 
 use super::Cache;
 use crate::{cache::CacheOptions, config::STORE};

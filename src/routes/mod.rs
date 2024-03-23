@@ -23,28 +23,28 @@ use self::responses::{
     CustomDataResponse, DiagnosticsResponse, IndexResponse, ListAllResponse, MessageResponse,
 };
 
-pub async fn create_document(req: Request) -> impl IntoResponse {
+pub async fn create_document(_req: Request) -> impl IntoResponse {
     let path = Uuid::new_v4();
 
     match fs::create_dir(format!("{}/{}", STORE, path)) {
         Ok(_) => {
-            return Response::new(
+            Response::new(
                 to_string(&CustomDataResponse {
                     message: "Document Created, Success".to_string(),
                     success: true,
                     data: path.to_string(),
                 })
                 .unwrap(),
-            );
+            )
         }
         Err(error) => {
-            return Response::new(
+            Response::new(
                 to_string(&MessageResponse {
                     message: format!("Internal Server Errro - {:#?}", error),
                     success: false,
                 })
                 .unwrap(),
-            );
+            )
         }
     }
 }
@@ -72,7 +72,7 @@ pub async fn get_asset(
         }
         Some(file) => {
             let contents = file.contents.clone(); // The cached contents
-            let content_type = format_to_mime(file.format.clone());
+            let content_type = format_to_mime(file.format);
 
             ([("Content-Type", content_type)], contents)
         }

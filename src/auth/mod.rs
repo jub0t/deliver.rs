@@ -1,7 +1,7 @@
 pub mod documents;
 pub mod user;
 
-use chrono::{Duration, TimeDelta, Utc};
+use chrono::{Utc};
 use colored::Colorize;
 use jsonwebtoken::{decode, encode, DecodingKey, EncodingKey, Header, TokenData, Validation};
 
@@ -15,7 +15,7 @@ use self::user::UserClaims;
 
 const SECRET_KEY: &[u8] = b"secret";
 
-pub fn generate_token(username: &str) -> Result<String, String> {
+pub fn generate_token(_username: &str) -> Result<String, String> {
     let max_token_expire = TOKEN_EXPIRE_TIME.unwrap(); // Default token expiration to 1 day
     let expiration = Utc::now() + max_token_expire;
 
@@ -31,13 +31,13 @@ pub fn generate_token(username: &str) -> Result<String, String> {
 
 pub fn validate_token(token: &str) -> bool {
     match decode::<UserClaims>(
-        &token,
+        token,
         &DecodingKey::from_secret(SECRET_KEY),
         &Validation::default(),
     ) {
         Err(error) => {
             println!("{} JsonWebToken Error: {:#?}", "[AUTH]:".cyan(), error);
-            return false;
+            false
         }
 
         Ok(TokenData { claims, .. }) => {
@@ -53,7 +53,7 @@ pub fn hash_string(raw: &str) -> Option<String> {
     let password_hash = argon2.hash_password(raw.as_bytes(), &salt).unwrap();
 
     match PasswordHash::new(&password_hash.to_string()) {
-        Err(_) => return None,
-        Ok(hash) => return Some(hash.to_string()),
-    };
+        Err(_) => None,
+        Ok(hash) => Some(hash.to_string()),
+    }
 }

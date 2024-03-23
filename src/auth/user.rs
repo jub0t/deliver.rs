@@ -16,6 +16,6 @@ pub struct UserClaims {
 
 impl UserClaims {
     pub fn new(exp: usize) -> Self {
-        return Self { exp };
+        Self { exp }
     }
 }

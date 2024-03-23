@@ -79,23 +79,23 @@ pub async fn create_user(
     match db.create_user(new_user) {
         Err(sql_error) => match sql_error {
             rusqlite::Error::QueryReturnedNoRows => {
-                return Response::new(
+                Response::new(
                     to_string(&MessageResponse {
                         success: false,
                         message: "User already exists".to_string(),
                     })
                     .unwrap(),
-                );
+                )
             }
 
             _ => {
-                return Response::new(
+                Response::new(
                     to_string(&MessageResponse {
                         success: false,
                         message: sql_error.to_string(),
                     })
                     .unwrap(),
-                );
+                )
             }
         },
         Ok(_) => Response::new(
