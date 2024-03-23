@@ -1,9 +1,20 @@
-import { request } from 'undici'
+import { Dispatcher, request } from 'undici'
 import { JsonHeader } from "./misc"
+import BodyReadable from 'undici/types/readable';
+import FileWrapper from './wrapper';
+
+export interface CachedFile {
+    name: String,
+    document: String,
+    data: Buffer,
+}
+
+export type Body = BodyReadable & Dispatcher.BodyMixin;
 
 export default class RustNetwork {
     private url: String;
     private token?: String;
+    private store: CachedFile[] = [];
     private userInfo?: {
         username: String
     }
@@ -79,5 +90,15 @@ export default class RustNetwork {
         const time = (process.hrtime.bigint() - start);
 
         return time;
+    }
+
+    async getAsset(document: String, id: String): Promise<FileWrapper> {
+        const req = await request(`${this.url}/${document}/${id}`)
+        const body: Body = req.body;
+
+        const fw = new FileWrapper(body);
+        await fw.cacheBuffer();
+
+        return fw
     }
 }

@@ -1,4 +1,5 @@
 use std::fs::{self};
+use uuid::Uuid;
 
 use super::Cache;
 use crate::{cache::CacheOptions, config::STORE};
@@ -34,7 +35,7 @@ pub fn load_into(cache: &mut Cache) {
                         println!("{} {:#}", "[DOCUMENT]:".blue(), name);
 
                         // let path = format!("{}{}", STORE, name);
-                        // let new_path = format!("{}{}", STORE, nanoid!(10));
+                        // let new_path = format!("{}{}", STORE, Uuid::new_v4());
                         // match fs::rename(path.clone(), new_path) {
                         //     Err(error) => {
                         //         println!("{:#?}", error);
