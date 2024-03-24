@@ -27,25 +27,21 @@ pub async fn create_document(_req: Request) -> impl IntoResponse {
     let path = Uuid::new_v4();
 
     match fs::create_dir(format!("{}/{}", STORE, path)) {
-        Ok(_) => {
-            Response::new(
-                to_string(&CustomDataResponse {
-                    message: "Document Created, Success".to_string(),
-                    success: true,
-                    data: path.to_string(),
-                })
-                .unwrap(),
-            )
-        }
-        Err(error) => {
-            Response::new(
-                to_string(&MessageResponse {
-                    message: format!("Internal Server Errro - {:#?}", error),
-                    success: false,
-                })
-                .unwrap(),
-            )
-        }
+        Ok(_) => Response::new(
+            to_string(&CustomDataResponse {
+                message: "Document Created, Success".to_string(),
+                success: true,
+                data: path.to_string(),
+            })
+            .unwrap(),
+        ),
+        Err(error) => Response::new(
+            to_string(&MessageResponse {
+                message: format!("Internal Server Errro - {:#?}", error),
+                success: false,
+            })
+            .unwrap(),
+        ),
     }
 }
 

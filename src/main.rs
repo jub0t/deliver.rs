@@ -62,7 +62,10 @@ async fn main() {
         )
         .route("/", get(routes::other_routes));
 
-    println!("{} Running at http://127.0.0.1:3434", "[SERVER]".red());
+    println!(
+        "{} REST API Running at http://127.0.0.1:3434",
+        "[SERVER]".red()
+    );
     let listener = tokio::net::TcpListener::bind("127.0.0.1:3434")
         .await
         .unwrap();
