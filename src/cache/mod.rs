@@ -119,9 +119,18 @@ impl Cache {
             None => {
                 println!("File Ignore, No Extension Found: [{}]", filename);
             }
-            Some(ext) => {
-                extension = string_to_format(ext).unwrap();
-            }
+            Some(ext) => match string_to_format(ext) {
+                None => {
+                    println!(
+                        "{} Could Not Get Extension For {}",
+                        "[CACHE]:".purple(),
+                        full_path
+                    );
+                }
+                Some(e) => {
+                    extension = e;
+                }
+            },
         }
 
         match fs::read(full_path) {

@@ -15,6 +15,7 @@ pub fn format_to_string(f: FileFormat) -> String {
         FileFormat::IMAGE(i) => match i {
             ImageFormat::JPEG => "jpeg".to_string(),
             ImageFormat::PNG => "png".to_string(),
+            ImageFormat::JPG => "jpg".to_string(),
         },
 
         _ => String::new(),
@@ -30,6 +31,7 @@ pub fn string_to_format(s: &str) -> Option<FileFormat> {
         "png" => Some(FileFormat::IMAGE(ImageFormat::PNG)),
         "jpeg" => Some(FileFormat::IMAGE(ImageFormat::JPEG)),
         "mp4" => Some(FileFormat::VIDEO(VideoFormats::MP4)),
+        "avi" => Some(FileFormat::VIDEO(VideoFormats::AVI)),
         "json" => Some(FileFormat::FEED(FeedFormats::JSON)),
         "xml" => Some(FileFormat::FEED(FeedFormats::XML)),
         "yaml" => Some(FileFormat::FEED(FeedFormats::YAML)),
@@ -42,6 +44,7 @@ pub fn format_to_mime(ft: FileFormat) -> String {
         FileFormat::IMAGE(image_format) => match image_format {
             ImageFormat::PNG => "image/png".to_string(),
             ImageFormat::JPEG => "image/jpeg".to_string(),
+            ImageFormat::JPG => "image/jpg".to_string(),
         },
         FileFormat::AUDIO(audio_format) => match audio_format {
             AudioFormats::MP3 => "audio/mpeg".to_string(),
@@ -67,6 +70,8 @@ pub fn format_to_mime(ft: FileFormat) -> String {
         FileFormat::None => "application/text".to_string(),
         FileFormat::VIDEO(vid_fmt) => match vid_fmt {
             VideoFormats::MP4 => "video/mp4".to_string(),
+            VideoFormats::AVI => "video/x-msvideo".to_string(),
+            VideoFormats::WEBM => "video/webm".to_string(),
         },
     }
 }

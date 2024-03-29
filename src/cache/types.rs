@@ -4,6 +4,7 @@ use serde::{Deserialize, Serialize};
 pub enum ImageFormat {
     PNG,
     JPEG,
+    JPG,
 }
 
 #[derive(Clone, Serialize, Deserialize, Copy)]
@@ -22,6 +23,8 @@ pub enum DocumentFormats {
 #[derive(Clone, Serialize, Deserialize, Copy)]
 pub enum VideoFormats {
     MP4,
+    AVI,
+    WEBM,
 }
 
 #[derive(Clone, Serialize, Deserialize, Copy)]
