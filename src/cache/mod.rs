@@ -6,7 +6,7 @@ use std::{collections::HashMap, fs, time::SystemTime};
 
 use crate::{
     cache::format::string_to_format,
-    config::STORE,
+    config::{Config, STORE},
     hasher::{HashSize, Hasher},
     minify::Minifier,
 };
@@ -112,6 +112,7 @@ impl Cache {
     }
 
     pub fn cache(&mut self, document: String, filename: String, options: CacheOptions) -> bool {
+        let config = Config::new();
         let full_path = format!("{}{}/{}", STORE, document, filename);
         let mut extension: FileFormat = FileFormat::None;
 
@@ -190,13 +191,15 @@ impl Cache {
 
                 self.files.insert(key, file.clone());
 
-                println!(
-                    "   {} [Name: {}] [Size: {}] [Hash: {}]",
-                    "[FILE]:".green(),
-                    filename.bright_black(),
-                    file.contents.len().to_string().bright_black(),
-                    hash.clone().to_string().bright_black(),
-                );
+                if config.verbose {
+                    println!(
+                        "   {} [Name: {}] [Size: {}] [Hash: {}]",
+                        "[FILE]:".green(),
+                        filename.bright_black(),
+                        file.contents.len().to_string().bright_black(),
+                        hash.clone().to_string().bright_black(),
+                    );
+                }
 
                 true
             }

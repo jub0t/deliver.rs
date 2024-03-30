@@ -26,9 +26,6 @@ async fn main() {
     let mut cache = Cache::new();
     load_into(&mut cache);
 
-    let config = config::Config::new();
-    println!("{} {}", config.verbose, config.store);
-
     let shared_cache = Arc::new(Mutex::new(cache));
 
     let db = db::Database::new();
@@ -70,6 +67,7 @@ async fn main() {
         "{} REST API Running at http://127.0.0.1:3434",
         "[SERVER]".red()
     );
+
     let listener = tokio::net::TcpListener::bind("127.0.0.1:3434")
         .await
         .unwrap();
