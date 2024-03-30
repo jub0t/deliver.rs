@@ -7,3 +7,5 @@ cache_store = "./test/"
 cache_time = 86400
 ## How long before one checkwave(in seconds)
 watchdog_interval = 30
+## Max amount of files to load on start
+initial_load_count = 100
