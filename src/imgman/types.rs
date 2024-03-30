@@ -10,7 +10,7 @@ pub fn get_imgman_format(format: FileFormat) -> image::ImageFormat {
         },
 
         _ => {
-            return image::ImageFormat::WebP;
+            image::ImageFormat::WebP
         }
     }
 }

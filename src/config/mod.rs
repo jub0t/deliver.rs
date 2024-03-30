@@ -6,7 +6,7 @@ use toml::Value;
 pub static MAX_CACHE_TIME: u64 = 60 * 60 * 24;
 pub static WATCHDOG_INTERVAL: u64 = 30;
 pub static COUNTER: AtomicUsize = AtomicUsize::new(1);
-pub static TOKEN_EXPIRE_TIME: Option<Duration> = Some(Duration::hours(24 * 30 * 12));
+pub static TOKEN_EXPIRE_TIME: Option<Duration> = Duration::try_hours(24 * 30 * 12);
 pub static STORE: &str = "./test/";
 
 pub struct Config {

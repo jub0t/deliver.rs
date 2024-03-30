@@ -20,10 +20,10 @@ impl Universal {
         let mut img = image::io::Reader::new(Cursor::new(image.contents.clone()));
         img.set_format(image_format);
 
-        return Self {
+        Self {
             core: image,
             img,
             image_format,
-        };
+        }
     }
 }

@@ -1,10 +1,7 @@
 use std::fs::{self};
 
 use super::Cache;
-use crate::{
-    cache::CacheOptions,
-    config::{Config, STORE},
-};
+use crate::{cache::CacheOptions, config::STORE};
 use colored::*;
 
 pub fn load_into(cache: &mut Cache) {

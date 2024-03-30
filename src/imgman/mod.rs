@@ -10,9 +10,15 @@ pub mod universal;
 
 pub struct ImgMan {}
 
+impl Default for ImgMan {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 impl ImgMan {
     pub fn new() -> Self {
-        return Self {};
+        Self {}
     }
 
     pub fn resize(image: Universal, width: u32, height: u32) {

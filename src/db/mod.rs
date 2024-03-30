@@ -36,11 +36,14 @@ impl Database {
 
     pub fn create_user(&self, user: User) -> Result<usize, rusqlite::Error> {
         // Check if the user already exists
-        let user_exists: bool = self.conn.query_row(
-            "SELECT EXISTS(SELECT 1 FROM users WHERE username = ?1)",
-            [&user.username],
-            |row| row.get(0),
-        ).unwrap_or(false);
+        let user_exists: bool = self
+            .conn
+            .query_row(
+                "SELECT EXISTS(SELECT 1 FROM users WHERE username = ?1)",
+                [&user.username],
+                |row| row.get(0),
+            )
+            .unwrap_or(false);
 
         // If user already exists, return an error
         if user_exists {
