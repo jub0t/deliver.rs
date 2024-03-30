@@ -1,0 +1,9 @@
+## What kind of logging, true = detailed. false = basic.
+verbose = false
+
+## Path where all files will be stored.
+cache_store = "./test/"
+## Maximum time(in seconds to store each file).
+cache_time = 86400
+## How long before one checkwave(in seconds)
+watchdog_interval = 30

@@ -23,6 +23,9 @@ rusqlite = { version = "0.31.0", features = ["bundled"] }
 chrono = "0.4"
 futures = "0.3"
 argon2 = "0.5.3"
+image = "0.25.0"
+toml = "0.8.12"
+toml_edit = "0.22.9"
 
 [dependencies.xxhash-rust]
 version = "0.8.5"

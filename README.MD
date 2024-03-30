@@ -1,5 +1,14 @@
 ![Banner](./banner.png)
 
+
+## Features(I Might Add)
+
+- [x] Compression & Minification
+- [x] In-Memory Caching
+- [ ] Instant Live File Cloning.
+- [ ] Live Image Manipulation
+- [ ] Automated CSS Generation For Fonts.
+
 ## Structure
 
 ![Diagram](./diagram.png)

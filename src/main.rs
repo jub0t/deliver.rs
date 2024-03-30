@@ -3,6 +3,7 @@ pub mod cache;
 pub mod config;
 pub mod db;
 pub mod hasher;
+pub mod imgman;
 pub mod minify;
 pub mod routes;
 pub mod watchdog;
@@ -24,6 +25,9 @@ use std::{
 async fn main() {
     let mut cache = Cache::new();
     load_into(&mut cache);
+
+    let config = config::Config::new();
+    println!("{} {}", config.verbose, config.store);
 
     let shared_cache = Arc::new(Mutex::new(cache));
 
