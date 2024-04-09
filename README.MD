@@ -39,11 +39,11 @@
 
 ## Roadmap
 
-- [x] Compression & Minification
-- [x] In-Memory Caching
-- [ ] Instant Live File Cloning.
-- [ ] Live Image Manipulation
-- [ ] Automated CSS Generation For Fonts.
+- [x] Compression & minification.
+- [x] In-Memory caching.
+- [ ] Instant live file cloning.
+- [ ] Live image manipulation.
+- [ ] Automated CSS generation for fonts.
 
 ## Contributions & Issues
 
