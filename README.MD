@@ -1,19 +1,10 @@
 ![Banner](./banner.png)
 
-
-## Features(I Might Add)
-
-- [x] Compression & Minification
-- [x] In-Memory Caching
-- [ ] Instant Live File Cloning.
-- [ ] Live Image Manipulation
-- [ ] Automated CSS Generation For Fonts.
-
 ## Structure
 
 ![Diagram](./diagram.png)
 
-## Formats
+## Supported Formats
 
 - [x] HTML
 - [x] Javscript
@@ -45,3 +36,16 @@
 - [ ] Fonts
     - [ ] TTF/OTF
     - [ ] WOFF/WOFF2
+
+## Roadmap
+
+- [x] Compression & Minification
+- [x] In-Memory Caching
+- [ ] Instant Live File Cloning.
+- [ ] Live Image Manipulation
+- [ ] Automated CSS Generation For Fonts.
+
+## Contributions & Issues
+
+- Avoid contributions(pull requests) related to README.MD errors, for such errors open an issue instead.
+- Features can be requested by opening issues aswell.
