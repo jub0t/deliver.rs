@@ -1,5 +1,3 @@
-## Structure
-
 ![Diagram](./diagram.png)
 
 ## Supported Formats
