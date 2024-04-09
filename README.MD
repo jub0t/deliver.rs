@@ -1,5 +1,3 @@
-![Banner](./banner.png)
-
 ## Structure
 
 ![Diagram](./diagram.png)
