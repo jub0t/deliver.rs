@@ -1,5 +1,5 @@
 ## What kind of logging, true = detailed. false = basic.
-verbose = false
+verbose = true
 
 ## Path where all files will be stored.
 cache_store = "./test/"
@@ -9,3 +9,5 @@ cache_time = 86400
 watchdog_interval = 30
 ## Max amount of files to load on start
 initial_load_count = 100
+
+server_url = "http://localhost:3434"

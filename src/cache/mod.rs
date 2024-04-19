@@ -15,6 +15,7 @@ use serde::{Deserialize, Serialize};
 
 use self::{
     format::{format_to_mime, format_to_string},
+    load::load_cache_documents,
     types::FileFormat,
 };
 
@@ -69,11 +70,19 @@ impl Default for Cache {
 impl Cache {
     pub fn new() -> Self {
         let hasher = Hasher::new();
-        Self {
+        let mut cache = Self {
             hasher,
             minifer: Minifier::new(),
             files: HashMap::new(),
-        }
+        };
+
+        cache.load();
+
+        return cache;
+    }
+
+    pub fn load(&mut self) {
+        load_cache_documents(self);
     }
 
     pub fn get(&self, document: String, filename: String) -> Option<&File> {

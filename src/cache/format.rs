@@ -1,7 +1,8 @@
 // Import the FileFormat enum from the super module
 use super::{
     types::{
-        ArchiveFormats, AudioFormats, DocumentFormats, FeedFormats, ImageFormat, VideoFormats,
+        ArchiveFormats, AudioFormats, DocumentFormats, FeedFormats, FontFormats, ImageFormat,
+        VideoFormats,
     },
     FileFormat,
 };
@@ -35,6 +36,7 @@ pub fn string_to_format(s: &str) -> Option<FileFormat> {
         "json" => Some(FileFormat::FEED(FeedFormats::JSON)),
         "xml" => Some(FileFormat::FEED(FeedFormats::XML)),
         "yaml" => Some(FileFormat::FEED(FeedFormats::YAML)),
+        "otf" => Some(FileFormat::FONT(FontFormats::OTF)),
         _ => None, // Return None for unrecognized formats
     }
 }
@@ -72,6 +74,12 @@ pub fn format_to_mime(ft: FileFormat) -> String {
             VideoFormats::MP4 => "video/mp4".to_string(),
             VideoFormats::AVI => "video/x-msvideo".to_string(),
             VideoFormats::WEBM => "video/webm".to_string(),
+        },
+        FileFormat::FONT(f) => match f {
+            FontFormats::OTF => "font/otf".to_string(),
+            FontFormats::TTF => "font/ttf".to_string(),
+            FontFormats::WOFF => "font/woff".to_string(),
+            FontFormats::WOFF2 => "font/woff2".to_string(),
         },
     }
 }

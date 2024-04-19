@@ -29,9 +29,9 @@
 - [x] Documents
     - [x] PDF
     - [x] PPT/PPTX
-- [ ] Fonts
-    - [ ] TTF/OTF
-    - [ ] WOFF/WOFF2
+- [x] Fonts
+    - [x] TTF/OTF
+    - [x] WOFF/WOFF2
 
 ## Roadmap
 

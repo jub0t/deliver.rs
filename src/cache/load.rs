@@ -1,10 +1,15 @@
 use std::fs::{self};
 
 use super::Cache;
-use crate::{cache::CacheOptions, config::STORE};
+use crate::{
+    cache::CacheOptions,
+    config::{Config, STORE},
+};
 use colored::*;
 
-pub fn load_into(cache: &mut Cache) {
+pub fn load_cache_documents(cache: &mut Cache) {
+    let config = Config::new();
+
     match fs::read_dir(STORE) {
         Err(_) => {
             match fs::create_dir(STORE) {
@@ -32,7 +37,10 @@ pub fn load_into(cache: &mut Cache) {
                     }
                     Ok(document) => {
                         let name = document.file_name().to_str().unwrap().to_string();
-                        println!("{} Loading To Cache [{:#?}]", "[DOCUMENT]:".blue(), name);
+
+                        if config.verbose {
+                            println!("{} Loading To Cache [{:#?}]", "[DOCUMENT]:".blue(), name);
+                        }
 
                         // let path = format!("{}{}", STORE, name);
                         // let new_path = format!("{}{}", STORE, Uuid::new_v4());

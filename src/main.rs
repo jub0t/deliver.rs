@@ -4,6 +4,7 @@ pub mod config;
 pub mod db;
 pub mod hasher;
 pub mod imgman;
+pub mod midware;
 pub mod minify;
 pub mod routes;
 pub mod watchdog;
@@ -13,19 +14,19 @@ use axum::{
     routing::{get, post},
     Router,
 };
-use cache::{load::load_into, Cache};
+use cache::Cache;
 use colored::Colorize;
 use futures::lock::Mutex as AsyncMutex;
+use http::Method;
 use std::{
     sync::{Arc, Mutex},
     thread,
 };
+use tower_http::cors::{any, CorsLayer};
 
 #[tokio::main]
 async fn main() {
-    let mut cache = Cache::new();
-    load_into(&mut cache);
-
+    let cache = Cache::new();
     let shared_cache = Arc::new(Mutex::new(cache));
 
     let db = db::Database::new();
@@ -39,6 +40,10 @@ async fn main() {
 
     let cache1 = Arc::clone(&shared_cache.clone());
     let cache_all = Arc::clone(&shared_cache.clone());
+
+    let cors = CorsLayer::new()
+        .allow_methods(vec![Method::GET, Method::POST])
+        .allow_origin(any());
 
     let app = Router::new()
         .route("/upload-content", post(routes::upload_content))
@@ -61,7 +66,8 @@ async fn main() {
             "/create-user",
             post(move |body| routes::auth::create_user(db_arc_cloned, body)),
         )
-        .route("/", get(routes::other_routes));
+        .route("/", get(routes::other_routes))
+        .layer(cors);
 
     println!(
         "{} REST API Running at http://127.0.0.1:3434",

@@ -41,6 +41,14 @@ pub enum FeedFormats {
 }
 
 #[derive(Clone, Serialize, Deserialize, Copy)]
+pub enum FontFormats {
+    OTF,
+    TTF,
+    WOFF,
+    WOFF2,
+}
+
+#[derive(Clone, Serialize, Deserialize, Copy)]
 pub enum FileFormat {
     CSS,
     JS,
@@ -51,5 +59,6 @@ pub enum FileFormat {
     ARCHIVE(ArchiveFormats),
     FEED(FeedFormats),
     VIDEO(VideoFormats),
+    FONT(FontFormats),
     None,
 }
