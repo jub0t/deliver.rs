@@ -78,7 +78,7 @@ impl Cache {
 
         cache.load();
 
-        return cache;
+        cache
     }
 
     pub fn load(&mut self) {

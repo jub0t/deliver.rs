@@ -22,7 +22,7 @@ use std::{
     sync::{Arc, Mutex},
     thread,
 };
-use tower_http::cors::{any, CorsLayer};
+use tower_http::cors::CorsLayer;
 
 #[tokio::main]
 async fn main() {
@@ -41,9 +41,7 @@ async fn main() {
     let cache1 = Arc::clone(&shared_cache.clone());
     let cache_all = Arc::clone(&shared_cache.clone());
 
-    let cors = CorsLayer::new()
-        .allow_methods(vec![Method::GET, Method::POST])
-        .allow_origin(any());
+    let cors = CorsLayer::new().allow_methods(vec![Method::GET, Method::POST]);
 
     let app = Router::new()
         .route("/upload-content", post(routes::upload_content))
