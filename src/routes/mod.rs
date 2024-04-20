@@ -12,6 +12,7 @@ use axum::{
     extract::{Path, Request},
     response::{IntoResponse, Response},
 };
+use http::header::CACHE_CONTROL;
 use serde_json::to_string;
 use uuid::Uuid;
 
@@ -65,13 +66,25 @@ pub async fn get_asset(
             // Let's re-cache the file and send back.
             cache.cache(docid, assid, CacheOptions { minify: true });
 
-            ([("content-type", "text/plain".to_string())], Vec::new())
+            (
+                [
+                    ("content-type", "text/plain".to_string()),
+                    (("cache-control", "public, max-age=3600".to_string())),
+                ],
+                Vec::new(),
+            )
         }
         Some(file) => {
             let contents = file.contents.clone(); // The cached contents
             let content_type = format_to_mime(file.format);
 
-            ([("Content-Type", content_type)], contents)
+            (
+                [
+                    ("content-type", content_type),
+                    (("cache-control", "public, max-age=3600".to_string())),
+                ],
+                contents,
+            )
         }
     }
 }
