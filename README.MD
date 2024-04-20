@@ -1,47 +1,18 @@
-![Diagram](./diagram.png)
+> [!Important]
+> A blazingly fast Nontent-Delivery-Network (CDN) written in Rust that serves a variety of formats. It uses [axum](https://github.com/tokio-rs/axum) as HTTP server & an in-memory [cache system](https://github.com/jub0t/deliver.rs/tree/main/src/cache).
 
 ## Supported Formats
 
-- [x] HTML
-- [x] Javscript
-- [x] Css
-- [x] Image
-    - [x] PNG
-    - [x] JPG
-    - [x] JPEG
-    - [ ] GIF
-    - [ ] SVG
-- [x] Video
-    - [x] MP4
-    - [x] WEBM
-    - [x] FLV
-- [x] Audio
-    - [x] OGG
-    - [x] ACC
-    - [x] MP3
-- [x] Archives
-    - [x] ZIP
-    - [x] RAR
-- [x] Feeds & Data
-    - [x] JSON
-    - [x] YAML
-    - [x] XML
-- [x] Documents
-    - [x] PDF
-    - [x] PPT/PPTX
-- [x] Fonts
-    - [x] TTF/OTF
-    - [x] WOFF/WOFF2
-
-## Roadmap
-
-- [x] Compression & minification.
-- [x] In-Memory caching.
-- [ ] Instant live file cloning.
-- [ ] Live image manipulation.
-- [ ] Automated CSS generation for fonts.
+- `🟢 Web Content`: HTML, Javascript, CSS
+- `🟢 Images`: PNG, JPG, JPEG, GIF, SVG
+- `🟢 Video`: MP4, WEBM, FLV
+- `🟢 Audio`: OGG, ACC, MP3
+- `🟢 Archives`: ZIP, RAR
+- `🟢 Feeds & Data`: JSON, YAML, XML
+- `🟢 Documents`: PDF, PPT/PPTX
+- `🟢 Fonts`: TTF/OTF, WOFF/WOFF2
 
 ## Contributions & Issues
 
-- Avoid contributions(pull requests) related to README.MD errors, for such errors open an issue instead.
-- Features can be requested by opening issues aswell.
+> [!Note]
+> Try to avoid pull requests related to **READMEs**, for such errors open and issue [here](https://github.com/jub0t/deliver.rs/issues) instead. You can also use issues to request a feature.

@@ -8,16 +8,14 @@ pub async fn auth_middleware(req: Request, next: Next) -> Result<Response, Statu
     let token = headers.get("token");
 
     match token {
-        None => {
-            Ok(Response::new(
-                to_string(&MessageResponse {
-                    message: "Token not found in headers".to_string(),
-                    success: false,
-                })
-                .unwrap()
-                .into(),
-            ))
-        }
+        None => Ok(Response::new(
+            to_string(&MessageResponse {
+                message: "Token not found in headers".to_string(),
+                success: false,
+            })
+            .unwrap()
+            .into(),
+        )),
         Some(token) => {
             let raw = token.to_str().unwrap();
 
