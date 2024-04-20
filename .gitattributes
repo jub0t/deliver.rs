@@ -2,3 +2,4 @@
 * text=auto
 
 ./other/** linguist-vendored
+./docs/** linguist-vendored
