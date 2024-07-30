@@ -26,7 +26,7 @@ argon2 = "0.5.3"
 image = "0.25.0"
 toml = "0.8.12"
 toml_edit = "0.22.9"
-tower-http = {version= "0.5.2", features = ["cors"]}
+tower-http = { version = "0.5.2", features = ["cors"] }
 http = "1.1.0"
 
 [dependencies.xxhash-rust]
